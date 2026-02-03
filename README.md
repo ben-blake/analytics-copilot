@@ -15,7 +15,7 @@
 *   **Output:** The system generates the query, a summary of results, and an explanation. It can also generate optional charts from the results.
 *   **Interface:** Interactive web application for uploading datasets and querying.
 
-*(Architecture diagram to be added in `docs/` folder)*
+![Architecture Diagram](./docs/architecture.png)
 
 ## Dataset Links
 1.  **Brazilian E-Commerce Public Dataset by Olist (Kaggle)**
