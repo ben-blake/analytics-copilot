@@ -1,4 +1,4 @@
-# Analytics Copilot: Ask Questions About Your Data in Plain English
+# Analytics Copilot: Ask Questions About Your Data
 
 ## Team Members
 *   **Ben Blake** (GenAI & Backend Lead) - @ben-blake
