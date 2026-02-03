@@ -29,7 +29,7 @@
     *   **Usage:** A simpler baseline dataset for initial system testing and latency benchmarking before moving to the complex Olist schema.
 
 3.  **Spider: Yale Semantic Parsing and Text-to-SQL Challenge (Hugging Face)**
-    *   **Link:** [https://huggingface.co/datasets/spider](https://huggingface.co/datasets/spider)
+    *   **Link:** [https://huggingface.co/datasets/xlangai/spider](https://huggingface.co/datasets/xlangai/spider)
     *   **Description:** A large-scale, complex, cross-domain text-to-SQL dataset annotated by 11 Yale students.
     *   **Usage:** We will not use this for "training" in the traditional sense, but we will index high-quality SQL patterns from Spider into our Vector Database (RAG). This allows our Copilot to retrieve "few-shot" examples of complex SQL syntax (like nested subqueries or HAVING clauses) to guide the LLM.
 
