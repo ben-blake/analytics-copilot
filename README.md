@@ -40,7 +40,7 @@
     *   **Project Integration:** We will adapt their "Schema Abstraction" technique. Instead of feeding raw DDL to our LLM, we will build a "Semantic Metadata Layer" in Snowflake that maps cryptic column names to business definitions, significantly improving Text-to-SQL accuracy.
 
 2.  **OmniSQL: Synthesizing High-quality Text-to-SQL Data at Scale** (NeurIPS 2025)
-    *   **Link:** [https://arxiv.org/abs/2408.12658](https://arxiv.org/abs/2408.12658)
+    *   **Link:** [https://arxiv.org/abs/2503.02240](https://arxiv.org/abs/2503.02240)
     *   **Summary:** To solve the data scarcity problem, OmniSQL proposes a pipeline to generate over 2.5 million high-quality synthetic Text-to-SQL pairs. It demonstrates that models trained on this synthetic data can outperform those trained on human-annotated data.
     *   **Project Integration:** We will use a simplified version of their synthesis pipeline to "stress test" our system. We will generate synthetic user questions based on our specific schema (Olist) to create a robust evaluation set (Golden Q&A pairs) for measuring our Copilot's accuracy.
 
