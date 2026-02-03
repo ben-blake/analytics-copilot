@@ -1,8 +1,8 @@
 # Analytics Copilot: Ask Questions About Your Data
 
 ## Team Members
-*   **Ben Blake** (GenAI & Backend Lead) - @ben-blake
-*   **Tina Nguyen** (Data & Frontend Lead) - @tinana2k
+*   **Ben Blake** (GenAI & Backend Lead) - [@ben-blake](https://github.com/ben-blake)
+*   **Tina Nguyen** (Data & Frontend Lead) - [@tinana2k](https://github.com/tinana2k)
 
 ## Problem Statement & Objectives
 **Problem:** Non-technical users often depend on data analysts to write SQL queries or build dashboards, which creates bottlenecks and slows down decision-making processes.
