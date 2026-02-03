@@ -1,0 +1,47 @@
+---
+config:
+  layout: elk
+---
+flowchart LR
+ subgraph Sources["Data Sources"]
+        S1["Kaggle Datasets"]
+        S2["CSV Uploads"]
+  end
+ subgraph Platform["Snowflake Data Cloud"]
+    direction TB
+        Ingest["Ingestion & Stages"]
+        Storage[("Data Warehouse<br>Silver/Gold Tables")]
+        Vector[("Vector Store<br>Metadata &amp; Embeddings")]
+        Compute["SQL Engine"]
+        Cortex["Cortex AI<br>(LLM &amp; Search)"]
+  end
+ subgraph AppLayer["Application Layer"]
+        API["Copilot Orchestrator<br>(Python/LangChain)"]
+        UI["Streamlit Interface"]
+  end
+    S1 --> Ingest
+    S2 --> Ingest
+    Ingest --> Storage
+    Storage -- Extract Schema --> Vector
+    User(("Business<br>User")) <--> UI
+    UI <--> API
+    API -- "1. Context Retrieval" --> Vector
+    API -- "2. Generate SQL" --> Cortex
+    API -- "3. Execute Query" --> Compute
+    Compute -- "4. Return Data" --> API
+    Compute <--> Storage
+
+     S1:::source
+     S2:::source
+     Ingest:::snow
+     Storage:::snow
+     Vector:::snow
+     Compute:::snow
+     Cortex:::snow
+     API:::app
+     UI:::app
+     User:::user
+    classDef snow fill:#29B5E8,stroke:#003B5C,color:white,stroke-width:2px
+    classDef app fill:#ffffff,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    classDef user fill:#333,stroke:#333,color:white
+    classDef source fill:#eee,stroke:#999
