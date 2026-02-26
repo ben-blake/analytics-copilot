@@ -1,0 +1,1480 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-24T21:45:18.088852",
+    "total_questions": 50
+  },
+  "metrics": {
+    "total_questions": 50,
+    "successful_questions": 36,
+    "failed_questions": 14,
+    "execution_accuracy": 72.0,
+    "average_latency": 6.818832445144653,
+    "by_difficulty": {
+      "easy": {
+        "total": 20,
+        "successful": 16,
+        "failed": 4,
+        "accuracy": 80.0,
+        "average_latency": 2.8839553356170655
+      },
+      "medium": {
+        "total": 20,
+        "successful": 14,
+        "failed": 6,
+        "accuracy": 70.0,
+        "average_latency": 8.247318589687348
+      },
+      "hard": {
+        "total": 10,
+        "successful": 6,
+        "failed": 4,
+        "accuracy": 60.0,
+        "average_latency": 11.831614375114441
+      }
+    },
+    "failed_queries": [
+      {
+        "id": 2,
+        "question": "What is the average price of products in the 'electronics' category?",
+        "difficulty": "easy",
+        "error_message": "(1304): 01c2a3fb-0207-dac0-001e-4e6b002ce2f6: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 7,
+        "question": "What is the average price of products in the 'electronics' category?",
+        "difficulty": "easy",
+        "error_message": "(1304): 01c2a3fb-0207-dfa4-001e-4e6b002cb926: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 11,
+        "question": "What is the average price of products in the electronics category?",
+        "difficulty": "easy",
+        "error_message": "(1304): 01c2a3fc-0207-e1f3-001e-4e6b002d21ca: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 17,
+        "question": "What is the average price of products in the 'electronics' category?",
+        "difficulty": "easy",
+        "error_message": "(1304): 01c2a3fc-0207-dc83-001e-4e6b002c9bb2: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 2,
+        "question": "Which product categories have the highest average review scores?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3fc-0207-dac0-001e-4e6b002ce36a: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 5,
+        "question": "Which customers have the highest average order frequency?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3fd-0207-e1f0-001e-4e6b002d027e: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 10,
+        "question": "Which customers have the highest average order frequency?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3fd-0207-e1f3-001e-4e6b002d2242: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 12,
+        "question": "Which product categories have the highest average review scores?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3fe-0207-dd47-001e-4e6b002d304a: 000904 (42000): SQL compilation error: error line 7 at position 38",
+        "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.REVIEW_SCORE) AS AVG_REVIEW_SCORE\nFROM \n ANALYTICS_COPILOT.RAW.ORDER..."
+      },
+      {
+        "id": 15,
+        "question": "Which customers have the highest average order frequency?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3fe-0207-e1f3-001e-4e6b002d225a: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 20,
+        "question": "Which customers have the highest average order frequency?",
+        "difficulty": "medium",
+        "error_message": "(1304): 01c2a3ff-0207-e0ac-001e-4e6b002d129e: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 2,
+        "question": "Find the top 3 products in each category with the highest average review score and sales volume",
+        "difficulty": "hard",
+        "error_message": "(1304): 01c2a400-0207-df18-001e-4e6b002cd49e: 000904 (42000): SQL compilation error: error line 10 at position 95",
+        "generated_sql": "WITH ranked_products AS (\n SELECT\n ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME,\n ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.REVIEW_SCORE) AS AVG_REVIE..."
+      },
+      {
+        "id": 4,
+        "question": "Find the month-over-month growth rate in revenue by product category",
+        "difficulty": "hard",
+        "error_message": "(1304): 01c2a400-0207-dc83-001e-4e6b002c9c62: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 7,
+        "question": "Find the top 3 products in each category with the highest average review score and sales volume",
+        "difficulty": "hard",
+        "error_message": "(1304): 01c2a400-0207-e1f3-001e-4e6b002d22b6: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      },
+      {
+        "id": 8,
+        "question": "What is the month-over-month growth rate in sales for each product category?",
+        "difficulty": "hard",
+        "error_message": "(1304): 01c2a401-0207-dd47-001e-4e6b002d30ae: 001003 (42000): SQL compilation error:",
+        "generated_sql": "ERROR: Insufficient schema information"
+      }
+    ]
+  },
+  "detailed_results": [
+    {
+      "id": 1,
+      "question": "What is the total number of customers in the state of Rio de Janeiro?",
+      "expected_sql": "SELECT COUNT(CUSTOMER_ID) FROM RAW.CUSTOMERS WHERE CUSTOMER_STATE = 'RJ'",
+      "difficulty": "easy",
+      "tables_used": "RAW.CUSTOMERS",
+      "generated_sql": "SELECT COUNT(DISTINCT ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID) \nFROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES \nWHERE ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE = 'Rio de Janeiro'",
+      "success": true,
+      "latency_seconds": 3.400122880935669,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "What is the average price of products in the 'electronics' category?",
+      "expected_sql": "SELECT AVG(PRICE) FROM RAW.ORDER_ITEMS WHERE PRODUCT_ID IN (SELECT PRODUCT_ID FROM RAW.PRODUCTS WHERE PRODUCT_CATEGORY_NAME = 'electronics')",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS, RAW.PRODUCTS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 4.594246864318848,
+      "error_message": "(1304): 01c2a3fb-0207-dac0-001e-4e6b002ce2f6: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "What is the total freight value for orders delivered in 2018?",
+      "expected_sql": "SELECT SUM(FREIGHT_VALUE) FROM RAW.ORDER_ITEMS WHERE ORDER_ID IN (SELECT ORDER_ID FROM RAW.ORDERS WHERE EXTRACT(YEAR FROM ORDER_DELIVERED_CUSTOMER_DATE) = 2018)",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS, RAW.ORDERS",
+      "generated_sql": "SELECT SUM(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.FREIGHT_VALUE) AS TOTAL_FREIGHT_VALUE \nFROM ANALYTICS_COPILOT.RAW.ORDER_ITEMS",
+      "success": true,
+      "latency_seconds": 2.5005741119384766,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "What is the maximum review score given by customers?",
+      "expected_sql": "SELECT MAX(REVIEW_SCORE) FROM RAW.ORDER_REVIEWS",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT MAX(REVIEW_SCORE) FROM ANALYTICS_COPILOT.RAW.ORDER_REVIEWS",
+      "success": true,
+      "latency_seconds": 1.634692907333374,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "How many sellers are from the state of S\u00e3o Paulo?",
+      "expected_sql": "SELECT COUNT(SELLER_ID) FROM RAW.SELLERS WHERE SELLER_STATE = 'SP'",
+      "difficulty": "easy",
+      "tables_used": "RAW.SELLERS",
+      "generated_sql": "SELECT COUNT(ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID) FROM ANALYTICS_COPILOT.RAW.SELLERS WHERE ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE = 'S\u00e3o Paulo'",
+      "success": true,
+      "latency_seconds": 2.564105987548828,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What is the total number of customers in the state of Rio de Janeiro?",
+      "expected_sql": "SELECT COUNT(CUSTOMER_ID) FROM RAW.CUSTOMERS WHERE CUSTOMER_STATE = 'RJ'",
+      "difficulty": "easy",
+      "tables_used": "RAW.CUSTOMERS",
+      "generated_sql": "SELECT COUNT(DISTINCT ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID) \nFROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES \nWHERE ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE = 'Rio de Janeiro'",
+      "success": true,
+      "latency_seconds": 2.7444353103637695,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "What is the average price of products in the 'electronics' category?",
+      "expected_sql": "SELECT AVG(PRICE) FROM RAW.ORDER_ITEMS WHERE PRODUCT_ID IN (SELECT PRODUCT_ID FROM RAW.PRODUCTS WHERE PRODUCT_CATEGORY_NAME = 'electronics')",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS, RAW.PRODUCTS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 4.660202980041504,
+      "error_message": "(1304): 01c2a3fb-0207-dfa4-001e-4e6b002cb926: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "How many orders were delivered in 2018?",
+      "expected_sql": "SELECT COUNT(ORDER_ID) FROM RAW.ORDERS WHERE EXTRACT(YEAR FROM ORDER_DELIVERED_CUSTOMER_DATE) = 2018",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "SELECT COUNT(ORDER_ID) \nFROM ANALYTICS_COPILOT.RAW.ORDERS \nWHERE EXTRACT(YEAR FROM ORDER_DELIVERED_CUSTOMER_DATE) = 2018",
+      "success": true,
+      "latency_seconds": 2.322464942932129,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "What is the maximum product weight in grams?",
+      "expected_sql": "SELECT MAX(PRODUCT_WEIGHT_G) FROM RAW.PRODUCTS",
+      "difficulty": "easy",
+      "tables_used": "RAW.PRODUCTS",
+      "generated_sql": "SELECT MAX(PRODUCT_WEIGHT_G) FROM ANALYTICS_COPILOT.RAW.PRODUCTS",
+      "success": true,
+      "latency_seconds": 1.844576120376587,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "What is the total payment value for orders with more than one installment?",
+      "expected_sql": "SELECT SUM(PAYMENT_VALUE) FROM RAW.ORDER_PAYMENTS WHERE PAYMENT_INSTALLMENTS > 1",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_PAYMENTS",
+      "generated_sql": "SELECT SUM(ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_VALUE) \nFROM ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS \nWHERE ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_INSTALLMENTS > 1",
+      "success": true,
+      "latency_seconds": 2.9240901470184326,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "What is the average price of products in the electronics category?",
+      "expected_sql": "SELECT AVG(PRICE) FROM RAW.ORDER_ITEMS WHERE PRODUCT_ID IN (SELECT PRODUCT_ID FROM RAW.PRODUCTS WHERE PRODUCT_CATEGORY_NAME = 'electronics')",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.PRODUCTS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 4.68454909324646,
+      "error_message": "(1304): 01c2a3fc-0207-e1f3-001e-4e6b002d21ca: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "How many orders were delivered in the state of S\u00e3o Paulo?",
+      "expected_sql": "SELECT COUNT(ORDER_ID) FROM RAW.ORDERS WHERE CUSTOMER_ID IN (SELECT CUSTOMER_ID FROM RAW.CUSTOMERS WHERE CUSTOMER_STATE = 'SP')",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDERS,RAW.CUSTOMERS",
+      "generated_sql": "SELECT COUNT(ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID) \nFROM ANALYTICS_COPILOT.RAW.ORDERS \nJOIN ANALYTICS_COPILOT.RAW.CUSTOMERS ON ANALYTICS_COPILOT.RAW.ORDERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID \nWHERE ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE = 'S\u00e3o Paulo'",
+      "success": true,
+      "latency_seconds": 4.268870115280151,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "question": "What is the total freight value for orders placed in 2018?",
+      "expected_sql": "SELECT SUM(FREIGHT_VALUE) FROM RAW.ORDER_ITEMS WHERE ORDER_ID IN (SELECT ORDER_ID FROM RAW.ORDERS WHERE EXTRACT(YEAR FROM ORDER_PURCHASE_TIMESTAMP) = 2018)",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.ORDERS",
+      "generated_sql": "SELECT SUM(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.FREIGHT_VALUE) AS TOTAL_FREIGHT_VALUE \nFROM ANALYTICS_COPILOT.RAW.ORDER_ITEMS",
+      "success": true,
+      "latency_seconds": 1.9770021438598633,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "question": "How many customers are from the city of Rio de Janeiro?",
+      "expected_sql": "SELECT COUNT(CUSTOMER_ID) FROM RAW.CUSTOMERS WHERE CUSTOMER_CITY = 'Rio de Janeiro'",
+      "difficulty": "easy",
+      "tables_used": "RAW.CUSTOMERS",
+      "generated_sql": "SELECT COUNT(ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID) \nFROM ANALYTICS_COPILOT.RAW.CUSTOMERS \nWHERE ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY = 'Rio de Janeiro'",
+      "success": true,
+      "latency_seconds": 2.5436229705810547,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "question": "What is the maximum review score given by customers?",
+      "expected_sql": "SELECT MAX(REVIEW_SCORE) FROM RAW.ORDER_REVIEWS",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT MAX(REVIEW_SCORE) FROM ANALYTICS_COPILOT.RAW.ORDER_REVIEWS",
+      "success": true,
+      "latency_seconds": 1.4988510608673096,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "question": "What is the total number of customers in the state of Rio de Janeiro?",
+      "expected_sql": "SELECT COUNT(CUSTOMER_ID) FROM RAW.CUSTOMERS WHERE CUSTOMER_STATE = 'RJ'",
+      "difficulty": "easy",
+      "tables_used": "RAW.CUSTOMERS",
+      "generated_sql": "SELECT COUNT(DISTINCT ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID) \nFROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES \nWHERE ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE = 'Rio de Janeiro'",
+      "success": true,
+      "latency_seconds": 2.683560848236084,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "question": "What is the average price of products in the 'electronics' category?",
+      "expected_sql": "SELECT AVG(PRICE) FROM RAW.ORDER_ITEMS WHERE PRODUCT_ID IN (SELECT PRODUCT_ID FROM RAW.PRODUCTS WHERE PRODUCT_CATEGORY_NAME = 'electronics')",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS, RAW.PRODUCTS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 4.817409038543701,
+      "error_message": "(1304): 01c2a3fc-0207-dc83-001e-4e6b002c9bb2: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.1
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.1
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "question": "What is the total freight value for orders delivered in 2018?",
+      "expected_sql": "SELECT SUM(FREIGHT_VALUE) FROM RAW.ORDER_ITEMS WHERE ORDER_ID IN (SELECT ORDER_ID FROM RAW.ORDERS WHERE EXTRACT(YEAR, ORDER_DELIVERED_CUSTOMER_DATE) = 2018)",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_ITEMS, RAW.ORDERS",
+      "generated_sql": "SELECT SUM(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.FREIGHT_VALUE) AS TOTAL_FREIGHT_VALUE \nFROM ANALYTICS_COPILOT.RAW.ORDER_ITEMS",
+      "success": true,
+      "latency_seconds": 2.0835020542144775,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "question": "What is the maximum review score given by customers?",
+      "expected_sql": "SELECT MAX(REVIEW_SCORE) FROM RAW.ORDER_REVIEWS",
+      "difficulty": "easy",
+      "tables_used": "RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT MAX(REVIEW_SCORE) FROM ANALYTICS_COPILOT.RAW.ORDER_REVIEWS",
+      "success": true,
+      "latency_seconds": 1.411301851272583,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "question": "How many sellers are from the city of S\u00e3o Paulo?",
+      "expected_sql": "SELECT COUNT(SELLER_ID) FROM RAW.SELLERS WHERE SELLER_CITY = 'S\u00e3o Paulo'",
+      "difficulty": "easy",
+      "tables_used": "RAW.SELLERS",
+      "generated_sql": "SELECT COUNT(ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID) FROM ANALYTICS_COPILOT.RAW.SELLERS WHERE ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY = 'S\u00e3o Paulo'",
+      "success": true,
+      "latency_seconds": 2.520925283432007,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "question": "What is the average order value by customer city and state?",
+      "expected_sql": "SELECT AVG(T1.PRICE + T1.FREIGHT_VALUE) AS AVG_ORDER_VALUE, T2.CUSTOMER_CITY, T2.CUSTOMER_STATE FROM RAW.ORDER_ITEMS T1 INNER JOIN RAW.CUSTOMERS T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T2.CUSTOMER_CITY, T2.CUSTOMER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.CUSTOMERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY,\n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_ORDER_VALUE\nFROM \n ANALYTICS_COPILOT.RAW.CUSTOMERS\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY, ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE",
+      "success": true,
+      "latency_seconds": 5.906049013137817,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Which product categories have the highest average review scores?",
+      "expected_sql": "SELECT T1.PRODUCT_CATEGORY_NAME, AVG(T2.REVIEW_SCORE) AS AVG_REVIEW_SCORE FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME ORDER BY AVG_REVIEW_SCORE DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 16.60840392112732,
+      "error_message": "(1304): 01c2a3fc-0207-dac0-001e-4e6b002ce36a: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "What is the total sales by seller city and state?",
+      "expected_sql": "SELECT SUM(T1.SALES) AS TOTAL_SALES, T2.SELLER_CITY, T2.SELLER_STATE FROM RAW.SUPERSTORE_SALES T1 INNER JOIN RAW.SELLERS T2 ON T1.SELLER_ID = T2.SELLER_ID GROUP BY T2.SELLER_CITY, T2.SELLER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.SUPERSTORE_SALES,RAW.SELLERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY,\n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS TOTAL_SALES\nFROM \n ANALYTICS_COPILOT.RAW.SELLERS\nJOIN \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.SELLER_ID\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.ORDER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY, ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE",
+      "success": true,
+      "latency_seconds": 6.889017820358276,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "What percentage of orders were delivered on time by month?",
+      "expected_sql": "SELECT EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE) AS MONTH, COUNT(CASE WHEN T1.ORDER_DELIVERED_CUSTOMER_DATE <= T1.ORDER_ESTIMATED_DELIVERY_DATE THEN 1 END) / COUNT(*) * 100 AS ON_TIME_DELIVERY_RATE FROM RAW.ORDERS T1 GROUP BY EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE)",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "WITH monthly_deliveries AS (\n SELECT\n DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE) AS DELIVERY_MONTH,\n COUNT(CASE WHEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE <= ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ESTIMATED_DELIVERY_DATE THEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID END) AS ON_TIME_DELIVERIES,\n COUNT(ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID) AS TOTAL_DELIVERIES\n FROM ANALYTICS_COPILOT.RAW.ORDERS\n GROUP BY DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE)\n)\nSELECT\n DELIVERY_MONTH,\n ON_TIME_DELIVERIES,\n TOTAL_DELIVERIES,\n (ON_TIME_DELIVERIES * 1.0 / TOTAL_DELIVERIES) * 100 AS ON_TIME_DELIVERY_RATE\nFROM monthly_deliveries",
+      "success": true,
+      "latency_seconds": 6.939339876174927,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Which customers have the highest average order frequency?",
+      "expected_sql": "SELECT T1.CUSTOMER_ID, AVG(DATEDIFF(T1.ORDER_PURCHASE_TIMESTAMP, LAG(T1.ORDER_PURCHASE_TIMESTAMP) OVER (PARTITION BY T1.CUSTOMER_ID ORDER BY T1.ORDER_PURCHASE_TIMESTAMP)) AS AVG_ORDER_FREQUENCY FROM RAW.ORDERS T1 GROUP BY T1.CUSTOMER_ID ORDER BY AVG_ORDER_FREQUENCY DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 3.639166831970215,
+      "error_message": "(1304): 01c2a3fd-0207-e1f0-001e-4e6b002d027e: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What is the average order value by customer city and state?",
+      "expected_sql": "SELECT AVG(T1.PRICE + T1.FREIGHT_VALUE) AS AVG_ORDER_VALUE, T2.CUSTOMER_CITY, T2.CUSTOMER_STATE FROM RAW.ORDER_ITEMS T1 INNER JOIN RAW.CUSTOMERS T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T2.CUSTOMER_CITY, T2.CUSTOMER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.CUSTOMERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY,\n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_ORDER_VALUE\nFROM \n ANALYTICS_COPILOT.RAW.CUSTOMERS\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY, ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE",
+      "success": true,
+      "latency_seconds": 5.7058937549591064,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Which product categories have the highest average review scores?",
+      "expected_sql": "SELECT T1.PRODUCT_CATEGORY_NAME, AVG(T2.REVIEW_SCORE) AS AVG_REVIEW_SCORE FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME ORDER BY AVG_REVIEW_SCORE DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRICE) AS AVG_REVIEW_SCORE\nFROM \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCTS ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRODUCT_ID = ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION ON ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME = ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME\nGROUP BY \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH\nORDER BY \n AVG_REVIEW_SCORE DESC",
+      "success": true,
+      "latency_seconds": 14.913416385650635,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "What is the total sales by seller city and state?",
+      "expected_sql": "SELECT SUM(T1.SALES) AS TOTAL_SALES, T2.SELLER_CITY, T2.SELLER_STATE FROM RAW.SUPERSTORE_SALES T1 INNER JOIN RAW.SELLERS T2 ON T1.SELLER_ID = T2.SELLER_ID GROUP BY T2.SELLER_CITY, T2.SELLER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.SUPERSTORE_SALES,RAW.SELLERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY,\n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS TOTAL_SALES\nFROM \n ANALYTICS_COPILOT.RAW.SELLERS\nJOIN \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.SELLER_ID\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.ORDER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY, ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE",
+      "success": true,
+      "latency_seconds": 6.923733949661255,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "What percentage of orders were delivered on time by month?",
+      "expected_sql": "SELECT EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE) AS MONTH, COUNT(CASE WHEN T1.ORDER_DELIVERED_CUSTOMER_DATE <= T1.ORDER_ESTIMATED_DELIVERY_DATE THEN 1 END) / COUNT(*) * 100 AS ON_TIME_DELIVERY_RATE FROM RAW.ORDERS T1 GROUP BY EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE)",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "WITH monthly_deliveries AS (\n SELECT\n DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE) AS DELIVERY_MONTH,\n COUNT(CASE WHEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE <= ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ESTIMATED_DELIVERY_DATE THEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID END) AS ON_TIME_DELIVERIES,\n COUNT(ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID) AS TOTAL_DELIVERIES\n FROM ANALYTICS_COPILOT.RAW.ORDERS\n GROUP BY DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE)\n)\nSELECT\n DELIVERY_MONTH,\n ON_TIME_DELIVERIES,\n TOTAL_DELIVERIES,\n (ON_TIME_DELIVERIES * 1.0 / TOTAL_DELIVERIES) * 100 AS ON_TIME_DELIVERY_RATE\nFROM monthly_deliveries",
+      "success": true,
+      "latency_seconds": 7.059902906417847,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Which customers have the highest average order frequency?",
+      "expected_sql": "SELECT T1.CUSTOMER_ID, AVG(DATEDIFF(T1.ORDER_PURCHASE_TIMESTAMP, LAG(T1.ORDER_PURCHASE_TIMESTAMP) OVER (PARTITION BY T1.CUSTOMER_ID ORDER BY T1.ORDER_PURCHASE_TIMESTAMP)) AS AVG_ORDER_FREQUENCY FROM RAW.ORDERS T1 GROUP BY T1.CUSTOMER_ID ORDER BY AVG_ORDER_FREQUENCY DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 2.993035078048706,
+      "error_message": "(1304): 01c2a3fd-0207-e1f3-001e-4e6b002d2242: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "What is the average order value by customer city and state?",
+      "expected_sql": "SELECT AVG(T1.PRICE + T1.FREIGHT_VALUE) AS AVG_ORDER_VALUE, T2.CUSTOMER_CITY, T2.CUSTOMER_STATE FROM RAW.ORDER_ITEMS T1 INNER JOIN RAW.CUSTOMERS T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T2.CUSTOMER_CITY, T2.CUSTOMER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.CUSTOMERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY,\n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_ORDER_VALUE\nFROM \n ANALYTICS_COPILOT.RAW.CUSTOMERS\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY, \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE",
+      "success": true,
+      "latency_seconds": 5.443817853927612,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "Which product categories have the highest average review scores?",
+      "expected_sql": "SELECT T1.PRODUCT_CATEGORY_NAME, AVG(T2.REVIEW_SCORE) AS AVG_REVIEW_SCORE FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME ORDER BY AVG_REVIEW_SCORE DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.REVIEW_SCORE) AS AVG_REVIEW_SCORE\nFROM \n ANALYTICS_COPILOT.RAW.ORDER_REVIEWS\nJOIN \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.ORDER_ITEM_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ITEM_ID\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCTS ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRODUCT_ID = ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION ON ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME = ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME\nGROUP BY \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH\nORDER BY \n AVG_REVIEW_SCORE DESC",
+      "success": false,
+      "latency_seconds": 22.242849826812744,
+      "error_message": "(1304): 01c2a3fe-0207-dd47-001e-4e6b002d304a: 000904 (42000): SQL compilation error: error line 7 at position 38",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "question": "What is the total sales by seller city and state?",
+      "expected_sql": "SELECT SUM(T1.SALES) AS TOTAL_SALES, T2.SELLER_CITY, T2.SELLER_STATE FROM RAW.SUPERSTORE_SALES T1 INNER JOIN RAW.SELLERS T2 ON T1.SELLER_ID = T2.SELLER_ID GROUP BY T2.SELLER_CITY, T2.SELLER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.SUPERSTORE_SALES,RAW.SELLERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY,\n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS TOTAL_SALES\nFROM \n ANALYTICS_COPILOT.RAW.SELLERS\nJOIN \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.SELLER_ID\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.ORDER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY, ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE",
+      "success": true,
+      "latency_seconds": 6.678438186645508,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "question": "What percentage of orders were delivered on time by month?",
+      "expected_sql": "SELECT EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE) AS MONTH, COUNT(CASE WHEN T1.ORDER_DELIVERED_CUSTOMER_DATE <= T1.ORDER_ESTIMATED_DELIVERY_DATE THEN 1 END) / COUNT(*) * 100 AS ON_TIME_DELIVERY_RATE FROM RAW.ORDERS T1 GROUP BY EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE)",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "WITH monthly_deliveries AS (\n SELECT\n DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE) AS DELIVERY_MONTH,\n COUNT(CASE WHEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE <= ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ESTIMATED_DELIVERY_DATE THEN 1 END) AS ON_TIME_DELIVERIES,\n COUNT(*) AS TOTAL_DELIVERIES\n FROM ANALYTICS_COPILOT.RAW.ORDERS\n GROUP BY DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE)\n)\nSELECT\n DELIVERY_MONTH,\n (ON_TIME_DELIVERIES / NULLIF(TOTAL_DELIVERIES, 0)) * 100 AS ON_TIME_DELIVERY_RATE\nFROM monthly_deliveries\nORDER BY DELIVERY_MONTH",
+      "success": true,
+      "latency_seconds": 6.0792741775512695,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Which customers have the highest average order frequency?",
+      "expected_sql": "SELECT T1.CUSTOMER_ID, AVG(DATEDIFF(T1.ORDER_PURCHASE_TIMESTAMP, LAG(T1.ORDER_PURCHASE_TIMESTAMP) OVER (PARTITION BY T1.CUSTOMER_ID ORDER BY T1.ORDER_PURCHASE_TIMESTAMP)) AS AVG_ORDER_FREQUENCY FROM RAW.ORDERS T1 GROUP BY T1.CUSTOMER_ID ORDER BY AVG_ORDER_FREQUENCY DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 3.141098976135254,
+      "error_message": "(1304): 01c2a3fe-0207-e1f3-001e-4e6b002d225a: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "question": "What is the average order value by customer city and state?",
+      "expected_sql": "SELECT AVG(T1.PRICE + T1.FREIGHT_VALUE) AS AVG_ORDER_VALUE, T2.CUSTOMER_CITY, T2.CUSTOMER_STATE FROM RAW.ORDER_ITEMS T1 INNER JOIN RAW.CUSTOMERS T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T2.CUSTOMER_CITY, T2.CUSTOMER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDER_ITEMS,RAW.CUSTOMERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY,\n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_ORDER_VALUE\nFROM \n ANALYTICS_COPILOT.RAW.CUSTOMERS\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.CUSTOMER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_CITY, ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_STATE",
+      "success": true,
+      "latency_seconds": 5.234521865844727,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "question": "Which product categories have the highest average review scores?",
+      "expected_sql": "SELECT T1.PRODUCT_CATEGORY_NAME, AVG(T2.REVIEW_SCORE) AS AVG_REVIEW_SCORE FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME ORDER BY AVG_REVIEW_SCORE DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRICE) AS AVG_REVIEW_SCORE\nFROM \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCTS ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRODUCT_ID = ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\nJOIN \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION ON ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME = ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME\nGROUP BY \n ANALYTICS_COPILOT.RAW.PRODUCT_CATEGORY_TRANSLATION.PRODUCT_CATEGORY_NAME_ENGLISH\nORDER BY \n AVG_REVIEW_SCORE DESC",
+      "success": true,
+      "latency_seconds": 21.5501229763031,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "question": "What is the total sales by seller city and state?",
+      "expected_sql": "SELECT SUM(T1.SALES) AS TOTAL_SALES, T2.SELLER_CITY, T2.SELLER_STATE FROM RAW.SUPERSTORE_SALES T1 INNER JOIN RAW.SELLERS T2 ON T1.SELLER_ID = T2.SELLER_ID GROUP BY T2.SELLER_CITY, T2.SELLER_STATE",
+      "difficulty": "medium",
+      "tables_used": "RAW.SUPERSTORE_SALES,RAW.SELLERS",
+      "generated_sql": "SELECT \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY,\n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS TOTAL_SALES\nFROM \n ANALYTICS_COPILOT.RAW.SELLERS\nJOIN \n ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.SELLERS.SELLER_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.SELLER_ID\nJOIN \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ID = ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.ORDER_ID\nGROUP BY \n ANALYTICS_COPILOT.RAW.SELLERS.SELLER_CITY, ANALYTICS_COPILOT.RAW.SELLERS.SELLER_STATE",
+      "success": true,
+      "latency_seconds": 6.801131725311279,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "question": "What percentage of orders were delivered on time by month?",
+      "expected_sql": "SELECT EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE) AS MONTH, COUNT(CASE WHEN T1.ORDER_DELIVERED_CUSTOMER_DATE <= T1.ORDER_ESTIMATED_DELIVERY_DATE THEN 1 END) / COUNT(*) * 100 AS ON_TIME_DELIVERY_RATE FROM RAW.ORDERS T1 GROUP BY EXTRACT(MONTH FROM T1.ORDER_DELIVERED_CUSTOMER_DATE)",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "WITH monthly_deliveries AS (\n SELECT\n DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE) AS DELIVERY_MONTH,\n COUNT(CASE WHEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE <= ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ESTIMATED_DELIVERY_DATE THEN ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID END) AS ON_TIME_DELIVERIES,\n COUNT(ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID) AS TOTAL_DELIVERIES\n FROM ANALYTICS_COPILOT.RAW.ORDERS\n GROUP BY DATE_TRUNC('MONTH', ANALYTICS_COPILOT.RAW.ORDERS.ORDER_DELIVERED_CUSTOMER_DATE)\n)\nSELECT\n DELIVERY_MONTH,\n ON_TIME_DELIVERIES,\n TOTAL_DELIVERIES,\n (ON_TIME_DELIVERIES * 1.0 / TOTAL_DELIVERIES) * 100 AS ON_TIME_DELIVERY_RATE\nFROM monthly_deliveries",
+      "success": true,
+      "latency_seconds": 7.107825756072998,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "question": "Which customers have the highest average order frequency?",
+      "expected_sql": "SELECT T1.CUSTOMER_ID, AVG(DATEDIFF(T1.ORDER_PURCHASE_TIMESTAMP, LAG(T1.ORDER_PURCHASE_TIMESTAMP) OVER (PARTITION BY T1.CUSTOMER_ID ORDER BY T1.ORDER_PURCHASE_TIMESTAMP)) AS AVG_ORDER_FREQUENCY FROM RAW.ORDERS T1 GROUP BY T1.CUSTOMER_ID ORDER BY AVG_ORDER_FREQUENCY DESC LIMIT 5",
+      "difficulty": "medium",
+      "tables_used": "RAW.ORDERS",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 3.0893309116363525,
+      "error_message": "(1304): 01c2a3ff-0207-e0ac-001e-4e6b002d129e: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "question": "What is the average revenue per customer by state, and rank the states by average revenue per customer?",
+      "expected_sql": "WITH avg_revenue_per_customer AS ( SELECT T1.CUSTOMER_STATE, AVG(T2.SALES) AS avg_revenue FROM RAW.CUSTOMERS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T1.CUSTOMER_STATE ) SELECT CUSTOMER_STATE, avg_revenue, RANK() OVER (ORDER BY avg_revenue DESC) AS rank FROM avg_revenue_per_customer",
+      "difficulty": "hard",
+      "tables_used": "RAW.CUSTOMERS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH avg_revenue_per_customer AS (\n SELECT \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_REVENUE,\n ROW_NUMBER() OVER (ORDER BY AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES\n GROUP BY ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE\n)\nSELECT STATE, AVG_REVENUE FROM avg_revenue_per_customer ORDER BY row_num",
+      "success": true,
+      "latency_seconds": 5.177080869674683,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Find the top 3 products in each category with the highest average review score and sales volume",
+      "expected_sql": "WITH top_products AS ( SELECT T1.PRODUCT_CATEGORY_NAME, T1.PRODUCT_NAME, AVG(T2.REVIEW_SCORE) AS avg_review_score, SUM(T3.SALES) AS total_sales FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.ORDER_ID INNER JOIN RAW.SUPERSTORE_SALES T3 ON T1.PRODUCT_ID = T3.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME, T1.PRODUCT_NAME ) SELECT PRODUCT_CATEGORY_NAME, PRODUCT_NAME, avg_review_score, total_sales FROM ( SELECT PRODUCT_CATEGORY_NAME, PRODUCT_NAME, avg_review_score, total_sales, ROW_NUMBER() OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY avg_review_score DESC, total_sales DESC) AS row_num FROM top_products ) WHERE row_num <= 3",
+      "difficulty": "hard",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH ranked_products AS (\n SELECT\n ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME,\n ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID,\n AVG(ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.REVIEW_SCORE) AS AVG_REVIEW_SCORE,\n COUNT(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ITEM_ID) AS SALES_VOLUME,\n ROW_NUMBER() OVER (PARTITION BY ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME ORDER BY AVG(ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.REVIEW_SCORE) DESC, COUNT(ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ITEM_ID) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.PRODUCTS\n JOIN ANALYTICS_COPILOT.RAW.ORDER_ITEMS ON ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID = ANALYTICS_COPILOT.RAW.ORDER_ITEMS.PRODUCT_ID\n JOIN ANALYTICS_COPILOT.RAW.ORDER_REVIEWS ON ANALYTICS_COPILOT.RAW.ORDER_ITEMS.ORDER_ITEM_ID = ANALYTICS_COPILOT.RAW.ORDER_REVIEWS.ORDER_ITEM_ID\n GROUP BY ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_CATEGORY_NAME, ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\n)\nSELECT PRODUCT_CATEGORY_NAME, PRODUCT_ID, AVG_REVIEW_SCORE, SALES_VOLUME FROM ranked_products WHERE row_num <= 3",
+      "success": false,
+      "latency_seconds": 37.82514572143555,
+      "error_message": "(1304): 01c2a400-0207-df18-001e-4e6b002cd49e: 000904 (42000): SQL compilation error: error line 10 at position 95",
+      "schema_context": [
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Calculate the customer lifetime value (CLV) and rank customers by CLV",
+      "expected_sql": "WITH customer_clv AS ( SELECT T1.CUSTOMER_ID, SUM(T2.SALES) AS total_sales, COUNT(DISTINCT T2.ORDER_ID) AS num_orders FROM RAW.CUSTOMERS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T1.CUSTOMER_ID ) SELECT CUSTOMER_ID, total_sales, num_orders, RANK() OVER (ORDER BY total_sales DESC) AS rank FROM customer_clv",
+      "difficulty": "hard",
+      "tables_used": "RAW.CUSTOMERS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH customer_ltv AS (\n SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID,\n SUM(ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_VALUE) AS TOTAL_SPENT,\n ROW_NUMBER() OVER (ORDER BY SUM(ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_VALUE) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.CUSTOMERS\n JOIN ANALYTICS_COPILOT.RAW.ORDERS ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.ORDERS.CUSTOMER_ID\n JOIN ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS ON ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID = ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.ORDER_ID\n GROUP BY ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID\n)\nSELECT CUSTOMER_ID, TOTAL_SPENT FROM customer_ltv ORDER BY TOTAL_SPENT DESC",
+      "success": true,
+      "latency_seconds": 7.566667079925537,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "Find the month-over-month growth rate in revenue by product category",
+      "expected_sql": "WITH monthly_revenue AS ( SELECT T1.PRODUCT_CATEGORY_NAME, EXTRACT(MONTH FROM T2.ORDER_DATE) AS month, SUM(T2.SALES) AS revenue FROM RAW.PRODUCTS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME, EXTRACT(MONTH FROM T2.ORDER_DATE) ) SELECT PRODUCT_CATEGORY_NAME, month, revenue, (revenue - LAG(revenue) OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY month)) / LAG(revenue) OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY month) AS growth_rate FROM monthly_revenue",
+      "difficulty": "hard",
+      "tables_used": "RAW.PRODUCTS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 4.513840198516846,
+      "error_message": "(1304): 01c2a400-0207-dc83-001e-4e6b002c9c62: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Identify the top-selling products in each region, and calculate the total sales and profit for each product",
+      "expected_sql": "WITH top_selling_products AS ( SELECT T1.PRODUCT_NAME, T2.REGION, SUM(T2.SALES) AS total_sales, SUM(T2.PROFIT) AS total_profit FROM RAW.PRODUCTS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_NAME, T2.REGION ) SELECT PRODUCT_NAME, REGION, total_sales, total_profit, RANK() OVER (PARTITION BY REGION ORDER BY total_sales DESC) AS rank FROM top_selling_products",
+      "difficulty": "hard",
+      "tables_used": "RAW.PRODUCTS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH ranked_products AS (\n SELECT\n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.REGION,\n ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS TOTAL_SALES,\n SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.PROFIT) AS TOTAL_PROFIT,\n ROW_NUMBER() OVER (PARTITION BY ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.REGION ORDER BY SUM(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES\n JOIN ANALYTICS_COPILOT.RAW.PRODUCTS ON ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.PRODUCT_ID = ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\n GROUP BY ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.REGION, ANALYTICS_COPILOT.RAW.PRODUCTS.PRODUCT_ID\n)\nSELECT REGION, PRODUCT_ID, TOTAL_SALES, TOTAL_PROFIT FROM ranked_products WHERE row_num <= 1",
+      "success": true,
+      "latency_seconds": 8.611043930053711,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "GEOLOCATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What is the average revenue per customer by state, and rank the states by average revenue per customer?",
+      "expected_sql": "WITH avg_revenue_per_customer AS ( SELECT T1.CUSTOMER_STATE, AVG(T2.SALES) AS avg_revenue FROM RAW.CUSTOMERS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T1.CUSTOMER_STATE ) SELECT CUSTOMER_STATE, avg_revenue, RANK() OVER (ORDER BY avg_revenue DESC) AS rank FROM avg_revenue_per_customer",
+      "difficulty": "hard",
+      "tables_used": "RAW.CUSTOMERS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH avg_revenue_per_customer AS (\n SELECT \n ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE,\n AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) AS AVG_REVENUE,\n ROW_NUMBER() OVER (ORDER BY AVG(ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.SALES) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES\n GROUP BY ANALYTICS_COPILOT.RAW.SUPERSTORE_SALES.STATE\n)\nSELECT STATE, AVG_REVENUE FROM avg_revenue_per_customer ORDER BY row_num",
+      "success": true,
+      "latency_seconds": 4.597462892532349,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SELLERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Find the top 3 products in each category with the highest average review score and sales volume",
+      "expected_sql": "WITH top_products AS ( SELECT T1.PRODUCT_CATEGORY_NAME, T1.PRODUCT_NAME, AVG(T2.REVIEW_SCORE) AS avg_review_score, SUM(T3.SALES) AS total_sales FROM RAW.PRODUCTS T1 INNER JOIN RAW.ORDER_REVIEWS T2 ON T1.PRODUCT_ID = T2.ORDER_ID INNER JOIN RAW.SUPERSTORE_SALES T3 ON T1.PRODUCT_ID = T3.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME, T1.PRODUCT_NAME ) SELECT PRODUCT_CATEGORY_NAME, PRODUCT_NAME, avg_review_score, total_sales, ROW_NUMBER() OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY avg_review_score DESC, total_sales DESC) AS row_num FROM top_products QUALIFY row_num <= 3",
+      "difficulty": "hard",
+      "tables_used": "RAW.PRODUCTS,RAW.ORDER_REVIEWS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 29.480300903320312,
+      "error_message": "(1304): 01c2a400-0207-e1f3-001e-4e6b002d22b6: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCT_CATEGORY_TRANSLATION",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "PRODUCTS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "What is the month-over-month growth rate in sales for each product category?",
+      "expected_sql": "WITH monthly_sales AS ( SELECT T1.PRODUCT_CATEGORY_NAME, EXTRACT(MONTH FROM T2.ORDER_DATE) AS month, SUM(T2.SALES) AS sales FROM RAW.PRODUCTS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.PRODUCT_ID = T2.PRODUCT_ID GROUP BY T1.PRODUCT_CATEGORY_NAME, EXTRACT(MONTH FROM T2.ORDER_DATE) ) SELECT PRODUCT_CATEGORY_NAME, month, sales, (sales - LAG(sales) OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY month)) / LAG(sales) OVER (PARTITION BY PRODUCT_CATEGORY_NAME ORDER BY month) AS growth_rate FROM monthly_sales",
+      "difficulty": "hard",
+      "tables_used": "RAW.PRODUCTS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "ERROR: Insufficient schema information",
+      "success": false,
+      "latency_seconds": 3.6261942386627197,
+      "error_message": "(1304): 01c2a401-0207-dd47-001e-4e6b002d30ae: 001003 (42000): SQL compilation error:",
+      "schema_context": [
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "Find the customers who have placed orders in each consecutive quarter",
+      "expected_sql": "WITH quarterly_orders AS ( SELECT T1.CUSTOMER_ID, EXTRACT(QUARTER FROM T2.ORDER_PURCHASE_TIMESTAMP) AS quarter, EXTRACT(YEAR FROM T2.ORDER_PURCHASE_TIMESTAMP) AS year FROM RAW.CUSTOMERS T1 INNER JOIN RAW.ORDERS T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T1.CUSTOMER_ID, EXTRACT(QUARTER FROM T2.ORDER_PURCHASE_TIMESTAMP), EXTRACT(YEAR FROM T2.ORDER_PURCHASE_TIMESTAMP) ) SELECT CUSTOMER_ID FROM quarterly_orders GROUP BY CUSTOMER_ID HAVING COUNT(DISTINCT quarter) = 4 AND COUNT(DISTINCT year) = 1",
+      "difficulty": "hard",
+      "tables_used": "RAW.CUSTOMERS,RAW.ORDERS",
+      "generated_sql": "WITH quarterly_customers AS (\n SELECT\n CUSTOMER_ID,\n DATE_TRUNC('QUARTER', ORDER_PURCHASE_TIMESTAMP) AS QUARTER,\n ROW_NUMBER() OVER (PARTITION BY CUSTOMER_ID ORDER BY DATE_TRUNC('QUARTER', ORDER_PURCHASE_TIMESTAMP)) AS quarter_num\n FROM ANALYTICS_COPILOT.RAW.ORDERS\n)\nSELECT CUSTOMER_ID FROM quarterly_customers GROUP BY CUSTOMER_ID, quarter_num HAVING COUNT(DISTINCT QUARTER) = COUNT(quarter_num)",
+      "success": true,
+      "latency_seconds": 7.4850099086761475,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "SUPERSTORE_SALES",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Calculate the customer lifetime value (CLV) and rank customers by CLV",
+      "expected_sql": "WITH customer_lifetime_value AS ( SELECT T1.CUSTOMER_ID, SUM(T2.SALES) AS total_sales, SUM(T2.PROFIT) AS total_profit FROM RAW.CUSTOMERS T1 INNER JOIN RAW.SUPERSTORE_SALES T2 ON T1.CUSTOMER_ID = T2.CUSTOMER_ID GROUP BY T1.CUSTOMER_ID ) SELECT CUSTOMER_ID, total_sales, total_profit, (total_sales - total_profit) / total_sales AS clv, RANK() OVER (ORDER BY (total_sales - total_profit) / total_sales DESC) AS rank FROM customer_lifetime_value",
+      "difficulty": "hard",
+      "tables_used": "RAW.CUSTOMERS,RAW.SUPERSTORE_SALES",
+      "generated_sql": "WITH customer_ltv AS (\n SELECT \n ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID,\n SUM(ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_VALUE) AS TOTAL_SPENT,\n ROW_NUMBER() OVER (ORDER BY SUM(ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.PAYMENT_VALUE) DESC) AS row_num\n FROM ANALYTICS_COPILOT.RAW.CUSTOMERS\n JOIN ANALYTICS_COPILOT.RAW.ORDERS ON ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID = ANALYTICS_COPILOT.RAW.ORDERS.CUSTOMER_ID\n JOIN ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS ON ANALYTICS_COPILOT.RAW.ORDERS.ORDER_ID = ANALYTICS_COPILOT.RAW.ORDER_PAYMENTS.ORDER_ID\n GROUP BY ANALYTICS_COPILOT.RAW.CUSTOMERS.CUSTOMER_ID\n)\nSELECT \n CUSTOMER_ID,\n TOTAL_SPENT AS CLV\nFROM customer_ltv\nORDER BY CLV DESC",
+      "success": true,
+      "latency_seconds": 9.433398008346558,
+      "error_message": null,
+      "schema_context": [
+        {
+          "table_name": "ORDER_ITEMS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_REVIEWS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "CUSTOMERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDERS",
+          "relevance_score": 0.5
+        },
+        {
+          "table_name": "ORDER_PAYMENTS",
+          "relevance_score": 0.5
+        }
+      ]
+    }
+  ]
+}
