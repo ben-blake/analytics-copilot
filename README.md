@@ -50,6 +50,134 @@
     *   **Project Integration:** This validates our architectural choice to use RAG for schema retrieval. We will implement a "Schema Linker" step in our pipeline that filters the 9 Olist tables down to the relevant 2-3 before the "SQL Generation" step, reducing token usage and hallucination risks.
 
 ## Repository Structure
-*   `/proposal`: Contains the detailed PDF project proposal.
-*   `/docs`: System diagrams, design notes, and project updates.
-*   `/reproducibility`: Instructions on how to reproduce the data, code, and experiments.
+```
+analytics-copilot/
+├── src/
+│   ├── agents/          # Schema Linker, SQL Generator, Validator
+│   │   ├── schema_linker.py
+│   │   ├── sql_generator.py
+│   │   └── validator.py
+│   ├── utils/           # Snowflake connection, visualization
+│   │   ├── snowflake_conn.py
+│   │   └── viz.py
+│   └── app.py           # Streamlit chat interface
+├── scripts/             # Data ingestion, metadata builder, evaluation
+│   ├── ingest_data.py
+│   ├── build_metadata.py
+│   ├── generate_golden.py
+│   └── evaluate.py
+├── snowflake/           # SQL DDL scripts (setup, tables, Cortex Search)
+│   ├── 01_setup.sql
+│   ├── 02_olist_tables.sql
+│   ├── 03_superstore.sql
+│   ├── 04_metadata.sql
+│   └── 05_cortex_search.sql
+├── data/                # CSV data, golden queries, evaluation results
+│   ├── olist/           # Brazilian E-Commerce CSVs
+│   ├── superstore/      # Superstore Sales CSV (optional)
+│   └── golden_queries.json
+├── docs/                # Architecture diagrams and project reports
+│   ├── architecture.png
+│   ├── architecture.mmd # Mermaid source for architecture diagram
+│   └── reports/         # Phase reports and proposal (PDF + LaTeX)
+│       ├── proposal.pdf
+│       ├── proposal.tex
+│       ├── phase2_report.pdf
+│       └── phase2_report.tex
+├── reproducibility/     # Setup instructions and troubleshooting guide
+│   └── README.md
+├── CONTRIBUTIONS.md
+├── requirements.txt
+└── .env.example
+```
+
+## Setup Instructions
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/ben-blake/analytics-copilot.git
+cd analytics-copilot
+```
+
+### 2. Set Up Python Environment
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 3. Configure Snowflake Connection
+Create a `.env` file in the project root:
+```ini
+SNOWFLAKE_ACCOUNT=your_account_identifier
+SNOWFLAKE_USER=your_username
+SNOWFLAKE_PASSWORD=your_password
+SNOWFLAKE_PRIVATE_KEY_PATH=./rsa_key.p8  
+SNOWFLAKE_ROLE=TRAINING_ROLE
+SNOWFLAKE_WAREHOUSE=COPILOT_WH
+SNOWFLAKE_DATABASE=ANALYTICS_COPILOT
+SNOWFLAKE_SCHEMA=RAW
+```
+
+### 4. Download Datasets
+Download the following datasets from Kaggle and place them in the `data/` directory:
+1. **Olist E-Commerce** *(required)*: [Download from Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and unzip into `data/olist/`
+2. **Superstore Sales** *(optional)*: [Download from Kaggle](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final) and save to `data/superstore/` — used for baseline benchmarking only; the main system focuses on Olist
+
+### 5. Run Setup Scripts
+Execute the setup SQL scripts to create database, schemas, and tables:
+```bash
+# Run each SQL script in order using Snowflake CLI or SnowSQL
+snowsql -f snowflake/01_setup.sql
+snowsql -f snowflake/02_olist_tables.sql
+snowsql -f snowflake/03_superstore.sql
+snowsql -f snowflake/04_metadata.sql
+snowsql -f snowflake/05_cortex_search.sql
+```
+
+Or execute all at once via the connection utility (if implemented in your environment).
+
+## Usage Instructions
+
+### Data Ingestion
+Load CSV data into Snowflake tables:
+```bash
+python scripts/ingest_data.py
+```
+This script:
+- Uploads CSVs to Snowflake internal stages
+- Copies data into Olist tables (`RAW.CUSTOMERS`, `RAW.ORDERS`, `RAW.ORDER_ITEMS`, etc.) and optionally `RAW.SUPERSTORE_SALES`
+- Applies primary and foreign key constraints
+
+### Build Semantic Metadata
+Generate business-friendly descriptions for tables and columns using Cortex LLM:
+```bash
+python scripts/build_metadata.py
+```
+Output: Populates `METADATA.TABLE_DESCRIPTIONS` and `METADATA.COLUMN_DESCRIPTIONS` tables.
+
+### Launch Streamlit Application
+Run the interactive chat interface:
+```bash
+streamlit run src/app.py
+```
+Open your browser to `http://localhost:8501` to start asking questions about your data.
+
+### Run Evaluation
+Test the system against golden queries to measure accuracy:
+```bash
+# Generate golden query dataset (optional - already provided)
+python scripts/generate_golden.py
+
+# Run evaluation benchmarks
+python scripts/evaluate.py
+```
+Metrics reported: Execution Accuracy (EX), Result Match, and Latency.
+
+## Features
+- **Natural Language to SQL**: Ask questions in plain English, get accurate SQL queries against the Olist Brazilian E-Commerce dataset
+- **Context-Aware RAG**: Retrieves relevant schema metadata via Cortex Search to reduce hallucinations
+- **Multi-Agent Pipeline**: Schema Linker filters relevant tables, SQL Generator creates queries, Validator auto-corrects errors
+- **Auto-Visualization**: Automatically generates bar, line, or scatter charts based on query results
+- **Self-Correction**: Validator retries up to 3 times with error feedback when SQL fails
+- **Snowflake Cortex Integration**: Uses Cortex LLM (`llama3.1-70b`) and Cortex Search for enterprise-grade AI capabilities
