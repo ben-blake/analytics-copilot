@@ -36,6 +36,7 @@ import re
 import warnings
 from typing import Any
 from snowflake.snowpark import Session
+from src.utils.config import get_config
 
 
 def generate_sql(
@@ -122,10 +123,11 @@ def generate_sql(
         escaped_prompt = _escape_sql_string(prompt)
 
         # Call Snowflake Cortex Complete LLM
-        # Using llama3.1-70b for strong reasoning and SQL generation capabilities
+        cfg = get_config()
+        llm_model = cfg.get("llm", {}).get("model", "llama3.1-70b")
         cortex_query = f"""
         SELECT SNOWFLAKE.CORTEX.COMPLETE(
-            'llama3.1-70b',
+            '{llm_model}',
             '{escaped_prompt}'
         ) AS generated_sql
         """
