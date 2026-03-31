@@ -37,6 +37,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.utils.snowflake_conn import get_session, close_session
+from src.utils.config import get_config
 
 
 def main():
@@ -46,11 +47,13 @@ def main():
     parser = argparse.ArgumentParser(
         description='Generate golden query benchmarks using Cortex LLM'
     )
+    cfg = get_config()
+    default_count = cfg.get("evaluation", {}).get("default_count", 50)
     parser.add_argument(
         '--count',
         type=int,
-        default=50,
-        help='Number of questions to generate (default: 50)'
+        default=default_count,
+        help=f'Number of questions to generate (default: {default_count})'
     )
     parser.add_argument(
         '--verify',
@@ -92,10 +95,12 @@ def main():
             print(f"  - {table_name} ({col_count} columns)")
         print()
 
-        # Calculate questions per difficulty level
-        # Distribution: 40% easy, 40% medium, 20% hard
-        easy_count = int(args.count * 0.4)
-        medium_count = int(args.count * 0.4)
+        # Calculate questions per difficulty level from config
+        dist = cfg.get("evaluation", {}).get("question_distribution", {})
+        easy_pct = dist.get("easy", 0.4)
+        medium_pct = dist.get("medium", 0.4)
+        easy_count = int(args.count * easy_pct)
+        medium_count = int(args.count * medium_pct)
         hard_count = args.count - easy_count - medium_count
 
         print(f"Question distribution:")
@@ -283,9 +288,11 @@ def generate_questions(
             escaped_prompt = prompt.replace("'", "''")
 
             # Call Cortex LLM
+            cfg = get_config()
+            llm_model = cfg.get("llm", {}).get("model", "llama3.1-70b")
             cortex_query = f"""
             SELECT SNOWFLAKE.CORTEX.COMPLETE(
-                'llama3.1-70b',
+                '{llm_model}',
                 '{escaped_prompt}'
             ) AS response
             """
