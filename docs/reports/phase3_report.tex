@@ -1,0 +1,250 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=0.9in,top=0.85in,bottom=0.85in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{parskip}
+\usepackage{array}
+
+\hypersetup{colorlinks=true, linkcolor=blue!70!black, urlcolor=blue!70!black}
+\titlespacing*{\section}{0pt}{14pt}{5pt}
+\titlespacing*{\subsection}{0pt}{10pt}{3pt}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!8},
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+}
+
+\title{\vspace{-1.2cm}\textbf{Analytics Copilot: Integrated System Report}\\[3pt]
+\large CS 5542 Big Data Analytics \& Applications --- Phase 3\\[2pt]
+\normalsize \url{https://github.com/ben-blake/analytics-copilot}}
+\author{\textbf{Ben Blake} (GenAI \& Backend Lead) \quad
+\textbf{Tina Nguyen} (Data \& Frontend Lead)}
+\date{March 30, 2026}
+
+\begin{document}
+\maketitle
+\vspace{-0.6cm}
+
+% ─────────────────────────────────────────────────────────
+\section{System Overview}
+% ─────────────────────────────────────────────────────────
+
+\subsection{Project Objective and Problem Domain}
+
+Analytics Copilot is a Text-to-SQL AI assistant that translates natural language questions into executable Snowflake SQL queries against the Olist Brazilian E-Commerce dataset. The system targets business analysts and data consumers who need to query relational data without writing SQL, operating over a highly normalized nine-table schema ($\sim$100{,}000 orders, 2016--2018) that requires multi-table JOINs to answer realistic business questions.
+
+\subsection{Application Description}
+
+The application is a Streamlit chat interface backed by a three-agent pipeline: a \textbf{Schema Linker} that uses Cortex Search to retrieve relevant table context via semantic similarity, a \textbf{SQL Generator} that prompts \texttt{llama3.1-70b} with that filtered context, and a \textbf{Validator} that executes the SQL via \texttt{EXPLAIN} and applies self-correction on failure. All inference and retrieval run inside Snowflake Cortex --- no data leaves the warehouse boundary.
+
+Through Labs 6--9 the system was extended with an explicit agent reasoning layer, a single-command reproducibility harness, a LoRA-adapted local model, and a production-grade deployment with session monitoring.
+
+\subsection{High-Level Workflow}
+
+A user types a natural language question. The Schema Linker queries the Cortex Search service over a pre-built semantic metadata layer and returns the top-$k$ relevant tables. The SQL Generator constructs an LLM prompt with schema context, few-shot examples, and 15 constraint rules, then calls \texttt{CORTEX.COMPLETE}. The Validator runs \texttt{EXPLAIN} on the result and, on failure, feeds the error back to the generator for up to three self-correction retries. The final result set is rendered in the Streamlit UI with an auto-selected visualization and a collapsible pipeline trace showing per-agent timing.
+
+% ─────────────────────────────────────────────────────────
+\section{System Architecture}
+% ─────────────────────────────────────────────────────────
+
+Figure~\ref{fig:arch} shows the full pipeline architecture. The diagram illustrates how each layer feeds into the next, from raw CSV sources through the Snowflake warehouse, the agent reasoning layer, and the Streamlit application with deployment and monitoring.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.88\textwidth]{architecture.png}
+    \caption{Analytics Copilot system architecture: Data Sources $\to$ Knowledge Base $\to$ Retrieval $\to$ Domain-Adapted Model $\to$ AI Agent Reasoning $\to$ Snowflake Warehouse $\to$ Application Interface $\to$ Monitoring}
+    \label{fig:arch}
+\end{figure}
+
+\noindent The pipeline layers are:
+
+\begin{enumerate}[nosep, leftmargin=1.5em]
+    \item \textbf{Data Sources} --- Olist Brazilian E-Commerce CSVs (9 tables, $\sim$100k orders)
+    \item \textbf{Multimodal Knowledge Base} --- \texttt{METADATA.TABLE\_DESCRIPTIONS}: LLM-generated column descriptions, synonyms, and sample values indexed by Cortex Search
+    \item \textbf{Retrieval Pipeline} --- Schema Linker with Cortex Search (semantic), ILIKE fallback (lexical), FK-partner supplementation
+    \item \textbf{Domain-Adapted Model} --- CodeLlama-7B-Instruct fine-tuned via LoRA/QLoRA on 82 Olist-specific instruction examples (Lab 8); Cortex \texttt{llama3.1-70b} as production path
+    \item \textbf{AI Agent Reasoning Layer} --- SQL Generator with structured prompts and few-shot examples; Validator with self-correction loop (up to 3 retries); pipeline trace instrumentation
+    \item \textbf{Snowflake Data Warehouse} --- \texttt{ANALYTICS\_COPILOT.RAW} (9 tables) + \texttt{METADATA} schema; Cortex Search service; all SQL execution in-warehouse
+    \item \textbf{Application Interface} --- Streamlit chat UI with tabbed layout, auto-visualization, inline pipeline traces, and Monitor dashboard
+\end{enumerate}
+
+% ─────────────────────────────────────────────────────────
+\section{Core Components (Project 2 Foundations)}
+% ─────────────────────────────────────────────────────────
+
+\subsection{Dataset and Knowledge Base}
+
+All nine Olist CSVs are ingested into \texttt{ANALYTICS\_COPILOT.RAW} via \texttt{scripts/ingest\_data.py} (Snowpark \texttt{COPY INTO}, type coercion, PK/FK constraints). A \textbf{Semantic Metadata Layer} in \\ \texttt{ANALYTICS\_COPILOT.METADATA} stores one row per column with LLM-generated descriptions, synonyms, and sample values (built by \texttt{scripts/build\_metadata.py}). This replaces raw DDL in LLM prompts, reducing hallucination by providing business-friendly context. Key tables: \texttt{ORDERS} (99,441 rows), \texttt{ORDER\_ITEMS} (112,650), \texttt{CUSTOMERS} (99,441), \texttt{PRODUCTS} (32,951), and five supporting tables.
+
+\subsection{Retrieval Pipeline}
+
+The Schema Linker (\texttt{src/agents/schema\_linker.py}) implements a three-level fallback chain: (1)~Cortex Search over \texttt{TABLE\_DESCRIPTIONS} for semantic retrieval; (2)~\texttt{ILIKE} keyword matching on column names, descriptions, and synonyms; (3)~full table dump from \texttt{INFORMATION\_SCHEMA} as last resort. Column-level results are grouped by table and scored by average relevance; the top-$k$ tables (default $k=5$) are passed to the SQL Generator.
+
+\subsection{Snowflake Integration}
+
+The connection utility (\texttt{src/utils/snowflake\_conn.py}) uses Snowflake Snowpark Python with RSA key-pair or password authentication loaded from environment configuration. All LLM inference (\texttt{CORTEX.COMPLETE}), semantic search (\texttt{CORTEX.SEARCH\_PREVIEW}), and query execution run inside Snowflake. Five sequential DDL scripts in \texttt{snowflake/} initialize the full environment.
+
+\subsection{Application Interface}
+
+The Phase 2 Streamlit app (\texttt{src/app.py}) provides a chat interface with persistent history, live progress indicators, collapsible SQL expanders, paginated result tables, and auto-visualization (\texttt{src/utils/viz.py}) that heuristically selects chart type by column types.
+
+\subsection{Baseline Evaluation}
+
+The evaluation harness (\texttt{scripts/evaluate.py}) benchmarks 50 golden queries (20 easy, 20 medium, 10 hard). Phase 2 baseline execution accuracy: $\sim$72--80\% overall; easy $\sim$95\%, medium $\sim$75\%, hard $\sim$55\%. Average end-to-end latency: 5--8s per query.
+
+% ─────────────────────────────────────────────────────────
+\section{Lab Integration (Labs 6--9)}
+% ─────────────────────────────────────────────────────────
+
+\subsection{Lab 6 --- Agent Integration}
+
+\textbf{Agent tools and reasoning workflow.} The system was formalized as an explicit agent layer with defined tool boundaries. The Schema Linker acts as a retrieval tool (RAG over Cortex Search), the SQL Generator uses the structured schema context and Gemini-style function-calling schemas for constrained output, and the Validator provides a deterministic execution-feedback loop. All three agents share a single Snowflake session passed from the application layer, avoiding redundant connections.
+
+Key engineering decisions validated through the planning exercise: a four-file \texttt{src/agents/} package structure, a shared Snowflake connection, and Gemini function-calling schemas for structured responses. A security review surfaced one actionable finding: storing RSA private keys inline in \texttt{.env} introduces newline-parsing bugs, which led to adopting exclusive file-path references for private keys (\texttt{SNOWFLAKE\_PRIVATE\_KEY\_PATH}).
+
+\textbf{Example interaction scenario.} A user asks ``Which sellers have the highest average review score?''. The Schema Linker retrieves \texttt{ORDER\_REVIEWS} (semantic hit) and supplements \texttt{ORDER\_ITEMS} and \texttt{SELLERS} via FK-partner logic. The SQL Generator produces a GROUP BY query with \texttt{HAVING COUNT(*) >= 5} to filter low-volume sellers. The Validator passes \texttt{EXPLAIN} and returns results in $\sim$8s.
+
+\subsection{Lab 7 --- Reproducibility with LLM Tools}
+
+\textbf{Environment configuration.} \texttt{reproduce.sh} orchestrates the full pipeline in a single command: virtual environment creation, pinned dependency installation (\texttt{requirements.txt} with \texttt{==} versions), smoke tests, Snowflake DDL execution, CSV ingestion, LLM-driven metadata generation, Cortex Search provisioning, 50-query evaluation, and artifact export. Four modes are supported: full pipeline, \texttt{--smoke} (offline, no Snowflake), \texttt{--test}, and \texttt{--eval}.
+
+\textbf{Reproducibility controls.} Determinism is enforced by \texttt{config.yaml} (seed 42, temperature 0.0, all model/path/limit parameters externalized). Structured artifacts are written to \texttt{artifacts/} and \texttt{logs/} on every run. Thirteen offline smoke tests (\texttt{tests/test\_smoke.py}) validate imports, configuration contracts, and agent initialization without a live Snowflake connection.
+
+\textbf{Use of LLM tools.} Both team members used Anthropic Claude Code (\texttt{claude-opus-4-6}) for generating \texttt{reproduce.sh} scaffolding, debugging pipeline failures (output buffering, SQL parser bugs, Cortex Search qualification), and iterating on golden query prompts. All generated artifacts were reviewed and validated by the team.
+
+\textbf{Lab 7 evaluation results.} After reproducibility hardening, accuracy on the 50-query benchmark reached 100\% across all difficulty levels (easy: 100\%, medium: 100\%, hard: 100\%), with an average latency of 17.5s. This improvement over the Phase 2 baseline is attributable to FK-partner supplementation (inspired by X-SQL's schema understanding expert), dataset isolation filtering, and structured error feedback in the Validator.
+
+\subsection{Lab 8 --- Domain Adaptation}
+
+\textbf{Instruction dataset creation.} \texttt{scripts/create\_instruction\_dataset.py} produced 82 Alpaca-format examples: 32 derived from the golden query benchmark and 50 augmented examples covering JOINs, aggregations, window functions (RANK, ROW\_NUMBER, LAG), CTEs, date functions, subqueries, and CASE expressions. Each example includes a system prompt with the full Olist schema and FK map, a natural language question, and a target SQL with fully qualified table names. The dataset was split 90/10 into training (74) and validation (8) sets and committed to \texttt{data/instruction\_dataset.json}.
+
+\textbf{Model adaptation approach.} LoRA with QLoRA 4-bit quantization was applied to CodeLlama-7B-Instruct: rank $r=16$, alpha $\alpha=32$, target modules \texttt{q\_proj / k\_proj / v\_proj / o\_proj}, 3 epochs, learning rate $2\times10^{-4}$, trained on a Colab T4 GPU in $\sim$15 minutes. Only $\sim$6.5M parameters are trainable ($\sim$0.1\% of 6.7B total). The fine-tuning notebook is at \texttt{notebooks/fine\_tune\_colab.ipynb}; the adapter is served by a FastAPI server (\texttt{scripts/api\_server.py}) and consumed via \\ \texttt{src/utils/finetuned\_client.py}.
+
+\textbf{Observed improvements.} Evaluating 15 queries (5 easy, 5 medium, 5 hard):
+
+\vspace{3pt}
+\begin{center}\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Metric} & \textbf{Baseline (Untrained)} & \textbf{LoRA Fine-Tuned} & \textbf{Improvement} \\
+\midrule
+Valid SQL & 14/15 (93\%) & 15/15 (100\%) & +7\% \\
+Qualified table names & 13/15 (87\%) & 15/15 (100\%) & +13\% \\
+Average inference latency & 20.2s & 7.4s & 2.7$\times$ faster \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{3pt}
+
+The fine-tuned model produces 100\% valid SQL and 100\% fully qualified table names. The 2 unqualified outputs from the baseline would cause Snowflake execution failures. The 2.7$\times$ latency improvement is consistent with more confident token generation after domain adaptation.
+
+\subsection{Lab 9 --- Application and Deployment Enhancement}
+
+\textbf{UI improvements.} The Streamlit interface was refactored from a single-page layout to a \textbf{tabbed design}: a Chat tab for the primary query interface and a Monitor tab for session analytics. The Chat tab now surfaces a collapsible \emph{Pipeline Trace} expander per response, showing per-agent status and execution time. The model selection UI was simplified to a single Cortex production mode, making the deployed application self-contained (Snowflake connection only; no local model server required).
+
+\textbf{Pipeline trace instrumentation.} \texttt{src/utils/trace.py} introduces a \texttt{PipelineTrace} module that records per-agent step timing, success/error status, retry detection, total pipeline latency, final SQL, and result row count. Traces are stored in Streamlit session state.
+
+\textbf{Monitoring dashboard.} The Monitor tab provides four metric cards (total queries, success rate, average latency, retry count), a Query History table with timestamps and row counts, a per-query latency bar chart (color-coded by success/error), and a stacked agent step breakdown chart for bottleneck identification.
+
+\textbf{Deployment.} The application is deployed on Streamlit Community Cloud. Snowflake credentials are managed via \texttt{st.secrets} (Streamlit Cloud) with automatic fallback to \texttt{.env} for local development. If no credentials are configured, the application starts in demo mode with a ``Disconnected'' banner rather than crashing. Configuration is in \texttt{.streamlit/config.toml}.
+
+% ─────────────────────────────────────────────────────────
+\section{Evaluation Results}
+% ─────────────────────────────────────────────────────────
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Phase} & \textbf{Queries} & \textbf{Accuracy} & \textbf{Avg Latency} & \textbf{Notes} \\
+\midrule
+Project 2 (baseline) & 50 & $\sim$75\% & 5--8s & Prompt engineering only \\
+Lab 7 (reproducibility) & 50 & \textbf{100\%} & 17.5s & FK supplementation + isolation filter \\
+Lab 8 LoRA vs Baseline & 15 & 100\% vs 93\% & 7.4s vs 20.2s & Domain-adapted CodeLlama-7B \\
+\bottomrule
+\end{tabular}
+\caption{Evaluation results across project phases}
+\end{table}
+
+The accuracy jump from $\sim$75\% to 100\% (Lab 7) is driven by three improvements integrated from the X-SQL architecture paper: FK-partner supplementation ensuring join partners are always included in schema context, a dataset isolation filter removing cross-dataset noise, and structured error feedback in the Validator's self-correction loop. The LoRA-adapted model further demonstrates that domain-specialized inference can exceed the zero-shot baseline on both correctness and speed, providing a locally deployable fallback independent of the Cortex API.
+
+The Monitor tab tracks these metrics live: session success rate, per-query latency, and agent step breakdown. In typical demo sessions, Schema Linker takes 1--3s, SQL Generator 8--15s, and Validator 1--2s (or longer on retry).
+
+% ─────────────────────────────────────────────────────────
+\section{Reproducibility Documentation}
+% ─────────────────────────────────────────────────────────
+
+\subsection{Environment Configuration}
+
+Python 3.10+ is required. All dependencies are pinned in \texttt{requirements.txt} with \texttt{==} versions. All runtime parameters (model name, temperature, seed, top-$k$, retry limit, paths, logging level) are externalized to \texttt{config.yaml}. Snowflake credentials are stored in \texttt{.env} (local) or Streamlit secrets (deployed); a template is provided at \texttt{.env.example} and \texttt{.streamlit/secrets.toml.example}.
+
+\subsection{Setup and Run Instructions}
+
+\begin{lstlisting}[language=bash]
+# 1. Clone and install
+git clone https://github.com/ben-blake/analytics-copilot.git
+cd analytics-copilot
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
+# 2. Configure credentials
+cp .env.example .env   # fill in Snowflake account, user, private key path
+
+# 3. Run full pipeline (smoke tests -> ingest -> metadata -> eval)
+bash reproducibility/reproduce.sh
+
+# 4. Launch application
+streamlit run src/app.py
+
+# 5. Offline smoke tests only (no Snowflake required)
+bash reproducibility/reproduce.sh --smoke
+\end{lstlisting}
+
+\subsection{Dataset Requirements}
+
+Download the Olist Brazilian E-Commerce dataset from Kaggle (\url{https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce}) and unzip into \texttt{data/olist/}. The ingestion script (\texttt{scripts/ingest\_data.py}) handles all DDL, staging, and \texttt{COPY INTO} operations. The golden query benchmark (50 queries) is committed to \texttt{data/golden\_queries.json} and does not need to be regenerated.
+
+\subsection{External Credentials and Services}
+
+The system requires: a Snowflake account with \texttt{CORTEX.COMPLETE} and \texttt{CORTEX.SEARCH\_PREVIEW} enabled, an RSA key pair configured for the Snowflake user, and the \texttt{ANALYTICS\_COPILOT} database with \texttt{RAW} and \texttt{METADATA} schemas. For the Lab 8 fine-tuned model, a Google Colab T4 session is needed to train and export the LoRA adapter; the pre-trained adapter checkpoint is available in the repository's release assets.
+
+% ─────────────────────────────────────────────────────────
+\section{Contribution Statement}
+% ─────────────────────────────────────────────────────────
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}p{2.4cm}p{9.6cm}c@{}}
+\toprule
+\textbf{Member} & \textbf{Contribution Description} & \textbf{\%} \\
+\midrule
+Ben Blake &
+GenAI pipeline (Schema Linker, SQL Generator, Validator agents); Snowflake infrastructure (DDL scripts, connection utility, ingestion, metadata generation); reproducibility harness (\texttt{reproduce.sh}, \texttt{config.yaml}, smoke tests); instruction dataset creation and LoRA fine-tuning (Lab 8); FastAPI model server (\texttt{scripts/api\_server.py}); evaluation pipeline (\texttt{scripts/evaluate.py}, \texttt{scripts/evaluate\_adaptation.py}); pipeline trace system (\texttt{src/utils/trace.py}); related work analysis and architecture design.
+& 50\% \\
+\addlinespace
+Tina Nguyen &
+Streamlit application (\texttt{src/app.py}): tabbed UI, Monitor dashboard, model selector, comparison mode; auto-visualization utility (\texttt{src/utils/viz.py}); data ingestion pipeline (\texttt{scripts/ingest\_data.py}); golden query curation (\texttt{scripts/generate\_golden.py}); instruction dataset validation and testing; Streamlit Cloud deployment and secrets configuration; project documentation (README, RUN.md, contribution reports); logging utility (\texttt{src/utils/logger.py}).
+& 50\% \\
+\bottomrule
+\end{tabular}
+\caption{Team contribution summary}
+\end{table}
+
+\noindent\textbf{AI tools used:} Anthropic Claude Code (\texttt{claude-opus-4-6}) assisted with code generation, debugging, and documentation throughout all phases. All generated code was reviewed, tested, and validated by the team.
+
+\end{document}
