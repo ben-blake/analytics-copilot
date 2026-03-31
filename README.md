@@ -7,177 +7,238 @@
 ## Problem Statement & Objectives
 **Problem:** Non-technical users often depend on data analysts to write SQL queries or build dashboards, which creates bottlenecks and slows down decision-making processes.
 
-**Objective:** To build an AI-Powered Data Analytics Copilot that enables self-service analytics. The system will allow business users to ask questions about their data in plain English and receive accurate answers, SQL queries, result tables, and visualizations, all while maintaining guardrails and providing clear explanations.
+**Objective:** To build an AI-Powered Data Analytics Copilot that enables self-service analytics. The system allows business users to ask questions about their data in plain English and receive accurate answers, SQL queries, result tables, and visualizations — all while maintaining guardrails and providing clear explanations.
 
 ## System Architecture
-*   **Natural Language Processing:** LLM translates natural-language questions into SQL (or dataframe operations).
-*   **Context Awareness:** RAG (Retrieval-Augmented Generation) over metadata (schema, column definitions, business glossary, example questions) to reduce hallucinations and errors.
-*   **Output:** The system generates the query, a summary of results, and an explanation. It can also generate optional charts from the results.
-*   **Interface:** Interactive web application for uploading datasets and querying.
 
 ![Architecture Diagram](./docs/architecture.png)
 
-## Dataset Links
-1.  **Brazilian E-Commerce Public Dataset by Olist (Kaggle)**
-    *   **Link:** [https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
-    *   **Description:** Real commercial data containing 100k orders across 9 relational tables (customers, orders, order_items, payments, products, etc.).
-    *   **Usage:** This will serve as our primary "Enterprise" demo database. We will ingest the CSVs into Snowflake, defining proper Primary/Foreign keys to test the system's ability to handle joins and complex schema relationships.
+The full pipeline:
 
-2.  **Superstore Sales Dataset (Kaggle)**
-    *   **Link:** [https://www.kaggle.com/datasets/vivek468/superstore-dataset-final](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final)
-    *   **Description:** A classic retail dataset covering 4 years of sales data. Can be treated as a flat table or normalized into Orders/Products/Customers.
-    *   **Usage:** A simpler baseline dataset for initial system testing and latency benchmarking before moving to the complex Olist schema.
+**Data Sources → Multimodal Knowledge Base → Retrieval Pipeline → Domain-Adapted Model → AI Agent Reasoning Layer → Snowflake Data Warehouse → Application Interface → Monitoring & Deployment**
 
-3.  **Spider: Yale Semantic Parsing and Text-to-SQL Challenge (Hugging Face)**
-    *   **Link:** [https://huggingface.co/datasets/xlangai/spider](https://huggingface.co/datasets/xlangai/spider)
-    *   **Description:** A large-scale, complex, cross-domain text-to-SQL dataset annotated by 11 Yale students.
-    *   **Usage:** We will not use this for "training" in the traditional sense, but we will index high-quality SQL patterns from Spider into our Vector Database (RAG). This allows our Copilot to retrieve "few-shot" examples of complex SQL syntax (like nested subqueries or HAVING clauses) to guide the LLM.
+1. **Data Sources** — Olist Brazilian E-Commerce CSVs (9 tables, ~100k orders)
+2. **Knowledge Base** — `METADATA.TABLE_DESCRIPTIONS`: LLM-generated column descriptions, synonyms, and sample values indexed by Cortex Search
+3. **Retrieval Pipeline** — Schema Linker with Cortex Search (semantic), ILIKE fallback (lexical), FK-partner supplementation
+4. **Domain-Adapted Model** — CodeLlama-7B-Instruct fine-tuned via LoRA/QLoRA on 82 Olist-specific instruction examples; Cortex `llama3.1-70b` as the production path
+5. **AI Agent Reasoning** — SQL Generator with structured prompts and few-shot examples; Validator with self-correction loop (up to 3 retries); pipeline trace instrumentation
+6. **Snowflake Warehouse** — `ANALYTICS_COPILOT.RAW` (9 tables) + `METADATA` schema; all inference runs inside Snowflake Cortex
+7. **Application Interface** — Streamlit chat UI with tabbed layout, auto-visualization, inline pipeline traces, and Monitor dashboard
 
-## Related Work (NeurIPS 2025 Paper References)
-1.  **Chatting With Your Data: LLM-Enabled Data Transformation for Enterprise Text to SQL** (NeurIPS 2025)
-    *   **Link:** [https://neurips.cc/virtual/2025/132553](https://neurips.cc/virtual/2025/132553)
-    *   **Summary:** This paper introduces MAIA, a system that addresses the "schema gap" in enterprise databases. It transforms fragmented, technical database schemas into semantically rich, logic-aligned representations that LLMs can easier understand.
-    *   **Project Integration:** We will adapt their "Schema Abstraction" technique. Instead of feeding raw DDL to our LLM, we will build a "Semantic Metadata Layer" in Snowflake that maps cryptic column names to business definitions, significantly improving Text-to-SQL accuracy.
+## Dataset
 
-2.  **OmniSQL: Synthesizing High-quality Text-to-SQL Data at Scale** (NeurIPS 2025)
-    *   **Link:** [https://arxiv.org/abs/2503.02240](https://arxiv.org/abs/2503.02240)
-    *   **Summary:** To solve the data scarcity problem, OmniSQL proposes a pipeline to generate over 2.5 million high-quality synthetic Text-to-SQL pairs. It demonstrates that models trained on this synthetic data can outperform those trained on human-annotated data.
-    *   **Project Integration:** We will use a simplified version of their synthesis pipeline to "stress test" our system. We will generate synthetic user questions based on our specific schema (Olist) to create a robust evaluation set (Golden Q&A pairs) for measuring our Copilot's accuracy.
-
-3.  **X-SQL: Expert Schema Linking and Understanding of Text-to-SQL with Multi-LLMs** (NeurIPS 2025)
-    *   **Link:** [https://arxiv.org/abs/2509.05899](https://arxiv.org/abs/2509.05899)
-    *   **Summary:** This work decomposes the Text-to-SQL task, using specialized "Expert" agents for Schema Linking (finding relevant tables) and Schema Understanding. It achieves state-of-the-art results by preventing the LLM from getting overwhelmed by irrelevant table info.
-    *   **Project Integration:** This validates our architectural choice to use RAG for schema retrieval. We will implement a "Schema Linker" step in our pipeline that filters the 9 Olist tables down to the relevant 2-3 before the "SQL Generation" step, reducing token usage and hallucination risks.
+**Brazilian E-Commerce Public Dataset by Olist**
+- **Link:** [https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+- **Scale:** ~100,000 orders across 9 relational tables, 2016–2018
+- **Usage:** Primary demo database. CSVs are ingested into Snowflake `RAW` schema with PK/FK constraints.
 
 ## Repository Structure
 ```
 analytics-copilot/
 ├── src/
-│   ├── agents/          # Schema Linker, SQL Generator, Validator
-│   │   ├── schema_linker.py
-│   │   ├── sql_generator.py
-│   │   └── validator.py
-│   ├── utils/           # Snowflake connection, visualization
-│   │   ├── snowflake_conn.py
-│   │   └── viz.py
-│   └── app.py           # Streamlit chat interface
-├── scripts/             # Data ingestion, metadata builder, evaluation
-│   ├── ingest_data.py
-│   ├── build_metadata.py
-│   ├── generate_golden.py
-│   └── evaluate.py
-├── snowflake/           # SQL DDL scripts (setup, tables, Cortex Search)
-│   ├── 01_setup.sql
-│   ├── 02_olist_tables.sql
-│   ├── 03_superstore.sql
-│   ├── 04_metadata.sql
-│   └── 05_cortex_search.sql
-├── data/                # CSV data, golden queries, evaluation results
-│   ├── olist/           # Brazilian E-Commerce CSVs
-│   ├── superstore/      # Superstore Sales CSV (optional)
-│   └── golden_queries.json
-├── docs/                # Architecture diagrams and project reports
-│   ├── architecture.png
-│   ├── architecture.mmd # Mermaid source for architecture diagram
-│   └── reports/         # Phase reports and proposal (PDF + LaTeX)
-│       ├── proposal.pdf
-│       ├── proposal.tex
-│       ├── phase2_report.pdf
-│       └── phase2_report.tex
-├── reproducibility/     # Setup instructions and troubleshooting guide
-│   └── README.md
-├── CONTRIBUTIONS.md
-├── requirements.txt
-└── .env.example
+│   ├── agents/                    # Three-agent pipeline
+│   │   ├── schema_linker.py       # Cortex Search RAG + FK supplementation
+│   │   ├── sql_generator.py       # LLM prompt engineering + few-shot examples
+│   │   └── validator.py           # EXPLAIN-based self-correction loop
+│   ├── utils/
+│   │   ├── snowflake_conn.py      # Snowpark connection (RSA/password, st.secrets fallback)
+│   │   ├── config.py              # Config loader backed by config.yaml
+│   │   ├── trace.py               # PipelineTrace instrumentation (Lab 9)
+│   │   ├── logger.py              # Dual file/console structured logging
+│   │   └── viz.py                 # Auto-visualization (bar, line, scatter)
+│   └── app.py                     # Streamlit app (Chat + Monitor tabs)
+├── scripts/
+│   ├── ingest_data.py             # Snowflake CSV ingestion via Snowpark
+│   ├── build_metadata.py          # LLM-generated semantic metadata
+│   ├── generate_golden.py         # Golden query benchmark generation
+│   ├── evaluate.py                # 50-query evaluation harness
+│   ├── evaluate_adaptation.py     # Baseline vs. LoRA comparison (Lab 8)
+│   ├── create_instruction_dataset.py  # 82-example Alpaca dataset (Lab 8)
+│   ├── fine_tune.py               # LoRA/QLoRA fine-tuning script (Lab 8)
+│   └── api_server.py              # FastAPI model server for fine-tuned model (Lab 8)
+├── snowflake/                     # SQL DDL scripts
+│   ├── 01_setup.sql               # Database, schemas, warehouse, file format
+│   ├── 02_olist_tables.sql        # 9 RAW tables with PK/FK constraints
+│   ├── 03_superstore.sql          # Optional Superstore table
+│   ├── 04_metadata.sql            # TABLE_DESCRIPTIONS and COLUMN_DESCRIPTIONS
+│   └── 05_cortex_search.sql       # Cortex Search service
+├── notebooks/
+│   └── fine_tune_colab.ipynb      # LoRA fine-tuning notebook (Colab T4 GPU)
+├── data/
+│   ├── olist/                     # Brazilian E-Commerce CSVs (download from Kaggle)
+│   ├── golden_queries.json        # 50 golden queries (20 easy / 20 medium / 10 hard)
+│   ├── instruction_dataset.json   # 82-example instruction dataset for fine-tuning
+│   ├── instruction_train.json     # Training split (74 examples)
+│   └── instruction_val.json       # Validation split (8 examples)
+├── tests/
+│   └── test_smoke.py              # 13 offline smoke tests (no Snowflake required)
+├── reproducibility/
+│   ├── reproduce.sh               # Single-command full pipeline orchestration
+│   └── README.md                  # Detailed setup and troubleshooting guide
+├── artifacts/                     # Evaluation outputs and fine-tuned model adapter
+├── logs/                          # Pipeline run logs
+├── docs/
+│   ├── architecture.png           # System architecture diagram
+│   ├── architecture.mmd           # Mermaid source
+│   └── reports/                   # Phase reports (PDF + LaTeX)
+├── .streamlit/
+│   ├── config.toml                # Streamlit theme and server config
+│   └── secrets.toml.example       # Credential template for Streamlit Cloud
+├── config.yaml                    # All runtime parameters (model, seed, limits, paths)
+├── requirements.txt               # Pinned Python dependencies
+└── .env.example                   # Credential template for local development
 ```
 
 ## Setup Instructions
 
-### 1. Clone Repository
+### Option A — Single-Command Reproduction (Recommended)
+
 ```bash
 git clone https://github.com/ben-blake/analytics-copilot.git
 cd analytics-copilot
+cp .env.example .env        # fill in Snowflake credentials
+bash reproducibility/reproduce.sh
 ```
 
-### 2. Set Up Python Environment
+Four modes are available:
+
+| Mode | Command | Description |
+|------|---------|-------------|
+| Full pipeline | `reproduce.sh` | Installs deps, ingests data, builds metadata, runs evaluation |
+| Offline smoke tests | `reproduce.sh --smoke` | Validates imports and config; no Snowflake required |
+| Tests only | `reproduce.sh --test` | Runs smoke test suite |
+| Evaluation only | `reproduce.sh --eval` | Runs 50-query benchmark against existing Snowflake setup |
+
+### Option B — Manual Setup
+
+#### 1. Clone and install
+
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+git clone https://github.com/ben-blake/analytics-copilot.git
+cd analytics-copilot
+python -m venv venv && source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Configure Snowflake Connection
-Create a `.env` file in the project root:
+#### 2. Configure credentials
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your Snowflake credentials:
+
 ```ini
 SNOWFLAKE_ACCOUNT=your_account_identifier
 SNOWFLAKE_USER=your_username
-SNOWFLAKE_PASSWORD=your_password
-SNOWFLAKE_PRIVATE_KEY_PATH=./rsa_key.p8  
+SNOWFLAKE_PRIVATE_KEY_PATH=./rsa_key.p8
 SNOWFLAKE_ROLE=TRAINING_ROLE
 SNOWFLAKE_WAREHOUSE=COPILOT_WH
 SNOWFLAKE_DATABASE=ANALYTICS_COPILOT
 SNOWFLAKE_SCHEMA=RAW
 ```
 
-### 4. Download Datasets
-Download the following datasets from Kaggle and place them in the `data/` directory:
-1. **Olist E-Commerce** *(required)*: [Download from Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and unzip into `data/olist/`
-2. **Superstore Sales** *(optional)*: [Download from Kaggle](https://www.kaggle.com/datasets/vivek468/superstore-dataset-final) and save to `data/superstore/` — used for baseline benchmarking only; the main system focuses on Olist
+#### 3. Download dataset
 
-### 5. Run Setup Scripts
-Execute the setup SQL scripts to create database, schemas, and tables:
+Download the [Olist E-Commerce dataset from Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) and unzip into `data/olist/`.
+
+#### 4. Initialize Snowflake
+
 ```bash
-# Run each SQL script in order using Snowflake CLI or SnowSQL
 snowsql -f snowflake/01_setup.sql
 snowsql -f snowflake/02_olist_tables.sql
-snowsql -f snowflake/03_superstore.sql
 snowsql -f snowflake/04_metadata.sql
 snowsql -f snowflake/05_cortex_search.sql
 ```
 
-Or execute all at once via the connection utility (if implemented in your environment).
+#### 5. Ingest data and build metadata
 
-## Usage Instructions
-
-### Data Ingestion
-Load CSV data into Snowflake tables:
 ```bash
 python scripts/ingest_data.py
-```
-This script:
-- Uploads CSVs to Snowflake internal stages
-- Copies data into Olist tables (`RAW.CUSTOMERS`, `RAW.ORDERS`, `RAW.ORDER_ITEMS`, etc.) and optionally `RAW.SUPERSTORE_SALES`
-- Applies primary and foreign key constraints
-
-### Build Semantic Metadata
-Generate business-friendly descriptions for tables and columns using Cortex LLM:
-```bash
 python scripts/build_metadata.py
 ```
-Output: Populates `METADATA.TABLE_DESCRIPTIONS` and `METADATA.COLUMN_DESCRIPTIONS` tables.
 
-### Launch Streamlit Application
-Run the interactive chat interface:
+#### 6. Launch application
+
 ```bash
 streamlit run src/app.py
 ```
-Open your browser to `http://localhost:8501` to start asking questions about your data.
 
-### Run Evaluation
-Test the system against golden queries to measure accuracy:
+Open `http://localhost:8501` to start querying.
+
+## Usage
+
+### Chat Interface
+
+Type any natural language question about the Olist dataset. Examples:
+- *"What is the average delivery time by customer state?"*
+- *"Which product categories generate the most revenue?"*
+- *"Show me the top 10 sellers by order volume this year."*
+
+Each response includes the generated SQL (collapsible), a result table, an auto-selected visualization, and a **Pipeline Trace** expander showing per-agent timing and status.
+
+### Monitor Tab
+
+The Monitor tab tracks live session analytics: total queries, success rate, average latency, retry count, a per-query latency chart, and an agent step breakdown chart for identifying bottlenecks.
+
+### Evaluation
+
 ```bash
-# Generate golden query dataset (optional - already provided)
-python scripts/generate_golden.py
-
-# Run evaluation benchmarks
+# Run 50-query golden benchmark
 python scripts/evaluate.py
-```
-Metrics reported: Execution Accuracy (EX), Result Match, and Latency.
 
-## Features
-- **Natural Language to SQL**: Ask questions in plain English, get accurate SQL queries against the Olist Brazilian E-Commerce dataset
-- **Context-Aware RAG**: Retrieves relevant schema metadata via Cortex Search to reduce hallucinations
-- **Multi-Agent Pipeline**: Schema Linker filters relevant tables, SQL Generator creates queries, Validator auto-corrects errors
-- **Auto-Visualization**: Automatically generates bar, line, or scatter charts based on query results
-- **Self-Correction**: Validator retries up to 3 times with error feedback when SQL fails
-- **Snowflake Cortex Integration**: Uses Cortex LLM (`llama3.1-70b`) and Cortex Search for enterprise-grade AI capabilities
+# Compare baseline vs. LoRA fine-tuned model (requires running api_server.py)
+python scripts/evaluate_adaptation.py
+```
+
+### Smoke Tests (Offline)
+
+```bash
+python -m pytest tests/test_smoke.py -v
+```
+
+Validates imports, configuration contracts, and agent initialization without a Snowflake connection.
+
+## Evaluation Results
+
+| Phase | Queries | Accuracy | Avg Latency | Notes |
+|-------|---------|----------|-------------|-------|
+| Project 2 baseline | 50 | ~75% | 5–8s | Prompt engineering only |
+| Lab 7 (reproducibility hardening) | 50 | **100%** | 17.5s | FK supplementation + isolation filter |
+| Lab 8 LoRA vs. Baseline | 15 | 100% vs. 93% | 7.4s vs. 20.2s | Domain-adapted CodeLlama-7B |
+
+## Domain Adaptation (Lab 8)
+
+A LoRA-adapted CodeLlama-7B-Instruct model is available as an alternative inference backend:
+
+```bash
+# Start the model server (requires GPU; tested on Colab T4)
+python scripts/api_server.py
+
+# Fine-tune from scratch (optional; pre-trained adapter in artifacts/)
+# Open notebooks/fine_tune_colab.ipynb in Google Colab
+```
+
+The fine-tuned model improves qualified table name usage from 87% → 100% and runs 2.7× faster than the zero-shot baseline.
+
+## Deployment
+
+The application is deployed on **Streamlit Community Cloud**. To deploy your own instance:
+
+1. Fork the repository and connect it to Streamlit Cloud.
+2. Copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` and fill in credentials.
+3. Add the secrets via the Streamlit Cloud dashboard (Settings → Secrets).
+
+If no Snowflake credentials are configured, the application starts in **demo mode** with a "Disconnected" banner rather than crashing.
+
+**Live app:** https://cs5542-analytics-copilot.streamlit.app
+
+## Related Work
+
+1. **X-SQL: Expert Schema Linking and Understanding of Text-to-SQL with Multi-LLMs** (NeurIPS 2025) — [arXiv:2509.05899](https://arxiv.org/abs/2509.05899) — validates the multi-agent decomposition architecture; FK-partner supplementation and structured error feedback are directly adopted from this work.
+2. **Chatting With Your Data: LLM-Enabled Data Transformation for Enterprise Text to SQL** (NeurIPS 2025) — [link](https://neurips.cc/virtual/2025/132553) — motivates the Semantic Metadata Layer approach.
+3. **OmniSQL: Synthesizing High-quality Text-to-SQL Data at Scale** (NeurIPS 2025) — [arXiv:2503.02240](https://arxiv.org/abs/2503.02240) — informs the synthetic golden query generation pipeline.
+
+## AI Tools Used
+
+- **Anthropic Claude Code** (`claude-opus-4-6`) — code generation, pipeline debugging, `reproduce.sh` scaffolding, instruction dataset drafting. All generated code was reviewed and validated by the team.
