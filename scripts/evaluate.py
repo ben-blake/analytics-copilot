@@ -45,9 +45,13 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.utils.snowflake_conn import get_session, close_session
+from src.utils.config import get_config
 from src.agents.schema_linker import link_schema
 from src.agents.sql_generator import generate_sql
 from src.agents.validator import validate_and_execute
+from src.utils.logger import get_logger
+
+logger = get_logger("evaluate")
 
 
 def main():
@@ -73,6 +77,7 @@ def main():
 
     args = parser.parse_args()
 
+    logger.info("Starting evaluation")
     print("="*70)
     print("ANALYTICS COPILOT EVALUATION")
     print("="*70)
@@ -129,6 +134,8 @@ def main():
         print()
 
         metrics = calculate_metrics(results)
+        logger.info("Evaluation accuracy: %.1f%% (%d/%d)", metrics['execution_accuracy'],
+                    metrics['successful_questions'], metrics['total_questions'])
         print_report(metrics)
 
         # Save results
@@ -150,6 +157,7 @@ def main():
         sys.exit(1)
 
     except Exception as e:
+        logger.error("Evaluation failed: %s", e)
         print(f"\n\nERROR: {str(e)}")
         import traceback
         traceback.print_exc()
@@ -180,7 +188,9 @@ def load_golden_queries() -> list[dict]:
     """
 
     project_root = Path(__file__).parent.parent
-    json_path = project_root / 'data' / 'golden_queries.json'
+    cfg = get_config()
+    golden_path = cfg.get("evaluation", {}).get("golden_queries_path", "data/golden_queries.json")
+    json_path = project_root / golden_path
 
     if not json_path.exists():
         raise FileNotFoundError(
@@ -251,7 +261,7 @@ def evaluate_questions(session, golden_queries: list[dict]) -> list[dict]:
 
             # Step 1: Schema Linker - find relevant tables
             print(f"  → Running schema_linker...")
-            schema_context = link_schema(session, query['question'], limit=5)
+            schema_context = link_schema(session, query['question'])
 
             if not schema_context or len(schema_context) == 0:
                 # Schema linker found no relevant tables
@@ -289,8 +299,10 @@ def evaluate_questions(session, golden_queries: list[dict]) -> list[dict]:
 
             # Step 3: Validator - validate and execute
             print(f"  → Running validator...")
+            cfg = get_config()
+            max_retries = cfg.get("sql_generator", {}).get("max_retries", 3)
             final_sql, execution_result = validate_and_execute(
-                session, generated_sql, query['question'], schema_context, max_retries=3
+                session, generated_sql, query['question'], schema_context, max_retries=max_retries
             )
 
             # Stop timing
@@ -476,8 +488,10 @@ def save_report(metrics: dict, results: list[dict]) -> None:
     """
 
     project_root = Path(__file__).parent.parent
-    data_dir = project_root / 'data'
-    data_dir.mkdir(exist_ok=True)
+    cfg = get_config()
+    report_path = cfg.get("evaluation", {}).get("report_path", "artifacts/evaluation_report.json")
+    json_path = project_root / report_path
+    json_path.parent.mkdir(parents=True, exist_ok=True)
 
     report = {
         'metadata': {
@@ -487,8 +501,6 @@ def save_report(metrics: dict, results: list[dict]) -> None:
         'metrics': metrics,
         'detailed_results': results
     }
-
-    json_path = data_dir / 'evaluation_report.json'
 
     with open(json_path, 'w') as f:
         json.dump(report, f, indent=2)
