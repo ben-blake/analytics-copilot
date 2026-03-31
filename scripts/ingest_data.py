@@ -29,6 +29,9 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from src.utils.snowflake_conn import get_session, close_session
+from src.utils.logger import get_logger
+
+logger = get_logger("ingest_data")
 
 
 # File mappings: CSV filename -> Snowflake table name
@@ -81,12 +84,14 @@ def execute_sql_file(session, sql_file_path: str) -> None:
     statements = [stmt.strip() for stmt in sql_content.split(';') if stmt.strip()]
 
     for i, statement in enumerate(statements, 1):
-        # Skip comment-only lines
-        if statement.startswith('--') or not statement:
+        # Strip comment-only lines from the statement
+        lines = [line for line in statement.splitlines() if not line.strip().startswith('--')]
+        cleaned = '\n'.join(lines).strip()
+        if not cleaned:
             continue
 
         try:
-            session.sql(statement).collect()
+            session.sql(cleaned).collect()
             print(f"  ✓ Statement {i}/{len(statements)} executed successfully")
         except Exception as e:
             # Print statement for debugging but continue
@@ -122,22 +127,18 @@ def upload_files_to_stage(session, local_dir: str, stage_name: str, file_pattern
 
     print(f"\nUploading {len(csv_files)} file(s) from {local_dir} to {stage_name}")
 
-    # Use PUT command to upload files
-    # Note: PUT command needs local file path with forward slashes
-    local_path = str(Path(local_dir) / file_pattern).replace('\\', '/')
-
-    try:
-        put_command = f"PUT 'file://{local_path}' {stage_name} AUTO_COMPRESS=FALSE OVERWRITE=TRUE"
-        result = session.sql(put_command).collect()
-
-        # Print upload results
-        for row in result:
-            status = row['status'] if hasattr(row, 'status') else 'UNKNOWN'
-            source = row['source'] if hasattr(row, 'source') else 'UNKNOWN'
-            print(f"  ✓ {source}: {status}")
-
-    except Exception as e:
-        raise Exception(f"Failed to upload files to {stage_name}: {str(e)}")
+    # Upload files one at a time for per-file progress feedback
+    for csv_file in csv_files:
+        file_path = str(csv_file).replace('\\', '/')
+        print(f"  → Uploading {csv_file.name}...", end=" ", flush=True)
+        try:
+            put_command = f"PUT 'file://{file_path}' {stage_name} AUTO_COMPRESS=FALSE OVERWRITE=TRUE"
+            result = session.sql(put_command).collect()
+            status = result[0]['status'] if result else 'UNKNOWN'
+            print(f"✓ {status}")
+        except Exception as e:
+            print(f"✗ {e}")
+            raise Exception(f"Failed to upload {csv_file.name} to {stage_name}: {str(e)}")
 
     print(f"✓ Upload completed to {stage_name}")
 
@@ -251,11 +252,13 @@ def run_ingestion_pipeline() -> None:
         project_root = Path(__file__).parent.parent
 
         print_section("Analytics Copilot - Data Ingestion Pipeline")
+        logger.info("Starting data ingestion pipeline")
         print(f"\nProject root: {project_root}")
 
         # Step 1: Connect to Snowflake
         print_section("Step 1: Connecting to Snowflake")
         session = get_session()
+        logger.info("Connected to Snowflake")
         print("✓ Connection established")
 
         # Step 2: Execute SQL scripts
@@ -353,6 +356,7 @@ def run_ingestion_pipeline() -> None:
         validate_data_load(session, 'RAW')
 
         # Final summary
+        logger.info("Data ingestion pipeline complete")
         print_section("Ingestion Pipeline Complete")
         print("\nNext steps:")
         print("  1. Verify row counts match expected values")
@@ -361,16 +365,19 @@ def run_ingestion_pipeline() -> None:
         print("  4. Proceed with metadata generation (Task 7)")
 
     except FileNotFoundError as e:
+        logger.error("File not found: %s", e)
         print(f"\n✗ File not found: {str(e)}")
         print("   Please ensure all required files and directories exist.")
         sys.exit(1)
 
     except ValueError as e:
+        logger.error("Configuration error: %s", e)
         print(f"\n✗ Configuration error: {str(e)}")
         print("   Please check your .env file and environment variables.")
         sys.exit(1)
 
     except Exception as e:
+        logger.error("Unexpected error: %s", e)
         print(f"\n✗ Unexpected error: {str(e)}")
         print("   Check the error message above and Snowflake logs for details.")
         sys.exit(1)
