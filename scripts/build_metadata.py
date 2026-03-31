@@ -34,6 +34,10 @@ from typing import List, Dict, Any
 sys.path.append(str(Path(__file__).parent.parent))
 
 from src.utils.snowflake_conn import get_session, close_session
+from src.utils.config import get_config
+from src.utils.logger import get_logger
+
+logger = get_logger("build_metadata")
 
 
 def print_section(title: str) -> None:
@@ -162,9 +166,11 @@ def generate_metadata_with_cortex(
     # Escape single quotes in prompt for SQL
     prompt_escaped = prompt.replace("'", "''")
 
+    cfg = get_config()
+    llm_model = cfg.get("llm", {}).get("model", "llama3.1-70b")
     cortex_query = f"""
         SELECT SNOWFLAKE.CORTEX.COMPLETE(
-            'llama3.1-70b',
+            '{llm_model}',
             '{prompt_escaped}'
         ) as response
     """
@@ -306,10 +312,12 @@ def build_metadata_pipeline(schema_name: str = 'RAW') -> None:
 
     try:
         print_section("Analytics Copilot - Metadata Builder")
+        logger.info("Starting metadata build pipeline")
 
         # Step 1: Connect to Snowflake
         print_section("Step 1: Connecting to Snowflake")
         session = get_session()
+        logger.info("Connected to Snowflake")
         print("✓ Connection established")
 
         # Step 2: Clear existing metadata
@@ -333,6 +341,7 @@ def build_metadata_pipeline(schema_name: str = 'RAW') -> None:
         errors = []
 
         for idx, (table_name, columns) in enumerate(tables.items(), 1):
+            logger.info("Processing table %d/%d: %s (%d columns)", idx, total_tables, table_name, len(columns))
             print(f"\n[{idx}/{total_tables}] Processing table: {table_name} ({len(columns)} columns)")
 
             try:
@@ -359,6 +368,8 @@ def build_metadata_pipeline(schema_name: str = 'RAW') -> None:
         # Step 5: Summary
         print_section("Metadata Generation Complete")
 
+        logger.info("Metadata build complete: %d tables, %d columns inserted, %d errors",
+                    total_tables, total_columns_inserted, len(errors))
         print(f"\nSummary Statistics:")
         print(f"  Tables processed:       {total_tables}")
         print(f"  Columns discovered:     {total_columns_processed}")
@@ -378,11 +389,13 @@ def build_metadata_pipeline(schema_name: str = 'RAW') -> None:
         print("  4. Proceed with Cortex Search Service setup (Task 8)")
 
     except ValueError as e:
+        logger.error("Configuration error: %s", e)
         print(f"\n✗ Configuration error: {str(e)}")
         print("   Please check your .env file and environment variables.")
         sys.exit(1)
 
     except Exception as e:
+        logger.error("Unexpected error: %s", e)
         print(f"\n✗ Unexpected error: {str(e)}")
         print("   Check the error message above and Snowflake logs for details.")
         sys.exit(1)
