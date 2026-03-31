@@ -31,9 +31,10 @@ import json
 import warnings
 from typing import Any
 from snowflake.snowpark import Session
+from src.utils.config import get_config
 
 
-def link_schema(session: Session, question: str, limit: int = 5) -> list[dict[str, Any]]:
+def link_schema(session: Session, question: str, limit: int = None) -> list[dict[str, Any]]:
     """
     Find relevant database tables for a given question using Cortex Search.
 
@@ -87,6 +88,11 @@ def link_schema(session: Session, question: str, limit: int = 5) -> list[dict[st
         - Requires TABLE_DESCRIPTIONS table to be populated
     """
 
+    # Load defaults from config
+    if limit is None:
+        cfg = get_config()
+        limit = cfg.get("schema_linker", {}).get("limit", 5)
+
     # Input validation
     if not question or not question.strip():
         warnings.warn("Empty question provided to schema linker. Returning empty results.")
@@ -98,11 +104,13 @@ def link_schema(session: Session, question: str, limit: int = 5) -> list[dict[st
 
     try:
         # Build the Cortex Search query
-        # We retrieve more columns than tables (limit * 10) because:
+        # We retrieve more columns than tables (limit * multiplier) because:
         # - Multiple columns belong to the same table
         # - We want comprehensive coverage of each relevant table
         # - We'll group by table_name and calculate aggregate scores
-        search_limit = limit * 10
+        cfg = get_config()
+        search_multiplier = cfg.get("schema_linker", {}).get("search_multiplier", 10)
+        search_limit = limit * search_multiplier
 
         # SNOWFLAKE.CORTEX.SEARCH_PREVIEW takes 2 args:
         # 1. service name
@@ -118,7 +126,7 @@ def link_schema(session: Session, question: str, limit: int = 5) -> list[dict[st
         search_query = f"""
         SELECT
             SNOWFLAKE.CORTEX.SEARCH_PREVIEW(
-                'SCHEMA_SEARCH_SERVICE',
+                'ANALYTICS_COPILOT.METADATA.SCHEMA_SEARCH_SERVICE',
                 '{search_request_escaped}'
             ) AS search_results
         """
@@ -191,8 +199,11 @@ def link_schema(session: Session, question: str, limit: int = 5) -> list[dict[st
         # Filter to avoid mixing incompatible datasets in the same context
         tables_list = _filter_dataset_mixing(tables_list)
 
-        # Return top 'limit' tables
-        return tables_list[:limit]
+        # Take top 'limit' tables, then supplement with FK partners
+        result = tables_list[:limit]
+        result = _supplement_related_tables(session, result, limit)
+
+        return result
 
     except Exception as e:
         error_msg = str(e)
