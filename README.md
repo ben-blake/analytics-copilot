@@ -1,6 +1,7 @@
 # Analytics Copilot: Ask Questions About Your Data
 
 **Live app:** [https://cs5542-analytics-copilot.streamlit.app](https://cs5542-analytics-copilot.streamlit.app)
+
 **Video demo:** [https://vimeo.com/1180190697](https://vimeo.com/1180190697)
 
 **CS 5542 Big Data Analytics & Applications · University of Missouri–Kansas City**
