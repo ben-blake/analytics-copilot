@@ -1,59 +1,39 @@
 # Individual Contribution Report — Tina Nguyen
+## Project 4 Deliverables (Poster, Presentation, Video)
 
 **Course:** CS 5542 Big Data Analytics & Applications
-**Project:** Analytics Copilot — Text-to-SQL AI Assistant
+**Project:** Analytics Copilot
 **Role:** Data & Frontend Lead
-**Contribution:** 50%
-
----
-
-## Personal Contribution Summary
-
-I was responsible for the data ingestion pipeline, the Streamlit application frontend, testing, Streamlit Cloud deployment, and project documentation. My work covers the data layer (raw ingestion through golden query curation) and the full application interface from Phase 2 through the Lab 9 monitoring dashboard.
+**Contribution (Project 4 deliverables):** 50%
 
 ---
 
 ## Contributions by File
 
-### Data Ingestion and Preparation
-- `scripts/ingest_data.py` *(modified)* — Snowflake data ingestion pipeline: DDL execution, CSV staging via Snowpark `session.file.put()`, COPY INTO with type coercion, row count validation ([f896669](https://github.com/ben-blake/analytics-copilot/commit/f896669))
-- `scripts/generate_golden.py` *(modified)* — Golden query benchmark generation (50 queries: 20 easy, 20 medium, 10 hard) ([01afb49](https://github.com/ben-blake/analytics-copilot/commit/01afb49))
-- `data/instruction_dataset.json` *(new)* — Validated and curated 82-example instruction dataset for Lab 8 fine-tuning ([1cfc990](https://github.com/ben-blake/analytics-copilot/commit/1cfc990))
-- `data/instruction_train.json` *(new)* — Training split (74 examples, 90%) ([83d37ee](https://github.com/ben-blake/analytics-copilot/commit/83d37ee))
-- `data/instruction_val.json` *(new)* — Validation split (8 examples, 10%) ([f8d8202](https://github.com/ben-blake/analytics-copilot/commit/f8d8202))
+### Research-A-Thon Poster
+- `docs/reports/poster.tex` *(contributed)* — Provided content and review for the Dataset Description section (table schema, row counts, ER relationships), Results & Evaluation section (evaluation numbers, LoRA comparison metrics), and Application section (UI feature descriptions, Streamlit Cloud deployment details). Reviewed and validated all accuracy figures, latency numbers, and dataset statistics against the actual system outputs.
 
-### Streamlit Application Frontend
-- `src/app.py` *(modified)* — Full Streamlit application: tabbed layout (Chat + Monitor tabs), chat history, live progress indicators, SQL expanders, Pipeline Trace expanders, result tables, Monitor dashboard (metric cards, query history, latency chart, agent step breakdown chart), graceful demo mode fallback ([a2eef7f](https://github.com/ben-blake/analytics-copilot/commit/a2eef7f))
-- `.streamlit/` *(new)* — Streamlit Cloud configuration (`config.toml`, `secrets.toml.example`) and credential management ([d283a14](https://github.com/ben-blake/analytics-copilot/commit/d283a14))
+### Presentation Slides
+- `docs/reports/presentation.tex` *(contributed)* — Provided content for the Demo slide (Chat Tab walkthrough, Monitor Tab feature list, live app URL), Key Results slide (metric descriptions and result interpretation), and Conclusion slide (future directions). Verified result figures match evaluation outputs from `scripts/evaluate.py` and `scripts/evaluate_adaptation.py`.
 
-### Testing
-- `tests/` *(new)* — Smoke test suite (`test_smoke.py`): 13 offline tests validating imports, configuration contracts, and agent initialization ([5e8d0be](https://github.com/ben-blake/analytics-copilot/commit/5e8d0be))
-
-### Logging
-- `src/utils/logger.py` *(new)* — Structured dual file/console logging utility with tee support ([203e56b](https://github.com/ben-blake/analytics-copilot/commit/203e56b))
+### Video
+- `docs/reports/video.mov` *(contributed)* — Reviewed the demo walkthrough section of the video for accuracy against the live application behavior, including the Pipeline Trace display, Monitor Tab metrics, and demo mode fallback. Confirmed the example query and response narrative matches real system output.
 
 ---
 
 ## Percentage Contribution
 
-**50%** — Data ingestion, Streamlit frontend, visualization, testing, deployment, and documentation.
+**50%** — Content review, data validation, and application section authorship across all three Project 3 deliverables.
 
 ---
 
 ## Tools Used
 
-- **Anthropic Claude Code** (`claude-opus-4-6`) — Streamlit UI iteration, debugging deployment credential issues, documentation drafting
-- **Streamlit Community Cloud** — Application hosting and secrets management
-- **Kaggle** — Olist Brazilian E-Commerce dataset download and preparation
+- **Anthropic Claude Code** (`claude-sonnet-4-6`) — Documentation review and content drafting
+- **Streamlit Community Cloud** — Verified live application behavior for demo section accuracy
 
 ---
 
 ## Reflection
 
-My primary technical work was the Streamlit application, which evolved significantly from a simple chat interface in Phase 2 to a production-grade tabbed application with a real-time monitoring dashboard in Lab 9. The most impactful change was the Monitor tab and Pipeline Trace system — users can now see exactly which agents ran, how long each took, and whether any retries occurred, making the system transparent and debuggable. The Lab 9 deployment work also required solving a non-obvious credential problem: passing a multi-line RSA private key through Streamlit's secrets manager required specific formatting that isn't documented clearly, which I resolved and documented in the secrets template.
-
----
-
-## GitHub Contribution Evidence
-
-See repository commit history: https://github.com/ben-blake/analytics-copilot
+My Project 4 focus was ensuring the deliverables accurately represented the system we built — particularly the evaluation numbers and application behavior shown to a Research-A-Thon audience. The results section of the poster required careful cross-referencing with the evaluation harness output to confirm the 100% accuracy figure, the speedup, and the latency numbers were cited correctly. For the video, I reviewed the demo walkthrough against the actual running application to make sure the narrated example query and response matched what a viewer would see live.
