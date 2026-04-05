@@ -4,11 +4,11 @@
 
 **Video demo:** [https://vimeo.com/1180190697](https://vimeo.com/1180190697)
 
-**CS 5542 Big Data Analytics & Applications · University of Missouri–Kansas City**
-
 ## Team Members
 *   **Ben Blake** (GenAI & Backend Lead) - [@ben-blake](https://github.com/ben-blake)
 *   **Tina Nguyen** (Data & Frontend Lead) - [@tinana2k](https://github.com/tinana2k)
+
+**CS 5542 Big Data Analytics & Applications · University of Missouri–Kansas City**
 
 ---
 
