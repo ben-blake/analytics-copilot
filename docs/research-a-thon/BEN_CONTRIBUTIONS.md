@@ -11,13 +11,13 @@
 ## Contributions by File
 
 ### Research-A-Thon Poster
-- `docs/reports/poster.tex` *(new)* — Full A0 portrait poster in LaTeX (`tikzposter`): all seven required sections (Problem Statement, Dataset, Methodology, System Architecture, Results & Evaluation, Application, Conclusion & Future Work); TikZ before/after diagram, layered architecture pipeline, ER diagram, pgfplots accuracy bar charts, LoRA vs. baseline xbar chart, Streamlit UI mockup. Wrote all section text including two-paragraph methodology explanation and architecture caption.
+- `docs/research-a-thon/poster.pdf` *(new)* — Full A0 portrait poster in LaTeX (`tikzposter`): all seven required sections (Problem Statement, Dataset, Methodology, System Architecture, Results & Evaluation, Application, Conclusion & Future Work); TikZ before/after diagram, layered architecture pipeline, ER diagram, pgfplots accuracy bar charts, LoRA vs. baseline xbar chart, Streamlit UI mockup. Wrote all section text including two-paragraph methodology explanation and architecture caption.
 
 ### Presentation Slides
-- `docs/reports/presentation.tex` *(new)* — 7-slide Beamer presentation (16:9): custom UMKC color theme, TikZ 3-agent pipeline diagram, full layered architecture TikZ, pgfplots results charts, four stat highlight cards, Streamlit UI mockup slide, conclusion slide with GitHub and live app links.
+- `docs/research-a-thon/presentation.pdf` *(new)* — 7-slide Beamer presentation (16:9): custom UMKC color theme, TikZ 3-agent pipeline diagram, full layered architecture TikZ, pgfplots results charts, four stat highlight cards, Streamlit UI mockup slide, conclusion slide with GitHub and live app links.
 
 ### Video
-- `docs/reports/video.mov` *(new)* — Recorded and produced the 3-minute demo video: screen-captured the live Streamlit application walkthrough, narrated over the presentation slides, edited and exported the final recording for submission.
+- `docs/research-a-thon/video.mov` *(new)* — Recorded and produced the 3-minute demo video: screen-captured the live Streamlit application walkthrough, narrated over the presentation slides, edited and exported the final recording for submission.
 
 ---
 

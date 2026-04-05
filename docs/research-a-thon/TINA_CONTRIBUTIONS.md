@@ -11,13 +11,13 @@
 ## Contributions by File
 
 ### Research-A-Thon Poster
-- `docs/reports/poster.tex` *(contributed)* — Provided content and review for the Dataset Description section (table schema, row counts, ER relationships), Results & Evaluation section (evaluation numbers, LoRA comparison metrics), and Application section (UI feature descriptions, Streamlit Cloud deployment details). Reviewed and validated all accuracy figures, latency numbers, and dataset statistics against the actual system outputs.
+- `docs/research-a-thon/poster.pdf` *(contributed)* — Provided content and review for the Dataset Description section (table schema, row counts, ER relationships), Results & Evaluation section (evaluation numbers, LoRA comparison metrics), and Application section (UI feature descriptions, Streamlit Cloud deployment details). Reviewed and validated all accuracy figures, latency numbers, and dataset statistics against the actual system outputs.
 
 ### Presentation Slides
-- `docs/reports/presentation.tex` *(contributed)* — Provided content for the Demo slide (Chat Tab walkthrough, Monitor Tab feature list, live app URL), Key Results slide (metric descriptions and result interpretation), and Conclusion slide (future directions). Verified result figures match evaluation outputs from `scripts/evaluate.py` and `scripts/evaluate_adaptation.py`.
+- `docs/research-a-thon/presentation.pdf` *(contributed)* — Provided content for the Demo slide (Chat Tab walkthrough, Monitor Tab feature list, live app URL), Key Results slide (metric descriptions and result interpretation), and Conclusion slide (future directions). Verified result figures match evaluation outputs from `scripts/evaluate.py` and `scripts/evaluate_adaptation.py`.
 
 ### Video
-- `docs/reports/video.mov` *(contributed)* — Reviewed the demo walkthrough section of the video for accuracy against the live application behavior, including the Pipeline Trace display, Monitor Tab metrics, and demo mode fallback. Confirmed the example query and response narrative matches real system output.
+- `docs/research-a-thon/video.mov` *(contributed)* — Reviewed the demo walkthrough section of the video for accuracy against the live application behavior, including the Pipeline Trace display, Monitor Tab metrics, and demo mode fallback. Confirmed the example query and response narrative matches real system output.
 
 ---
 
