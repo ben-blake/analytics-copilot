@@ -17,13 +17,13 @@
 - `docs/research-a-thon/presentation.pdf` *(new)* — 7-slide Beamer presentation (16:9): custom UMKC color theme, TikZ 3-agent pipeline diagram, full layered architecture TikZ, pgfplots results charts, four stat highlight cards, Streamlit UI mockup slide, conclusion slide with GitHub and live app links.
 
 ### Video
-- `docs/research-a-thon/video.mov` *(new)* — Recorded and produced the 3-minute demo video: screen-captured the live Streamlit application walkthrough, narrated over the presentation slides, edited and exported the final recording for submission.
+- `https://vimeo.com/1180190697` *(new)* — Recorded and produced the 3-minute demo video: screen-captured the live Streamlit application walkthrough, narrated over the presentation slides, edited and exported the final recording for submission.
 
 ---
 
 ## Percentage Contribution
 
-**50%** — Primary author of all three Project 3 deliverables: poster, presentation, and video script.
+**50%** — Primary author of all three Project 4 deliverables: poster, presentation, and video script.
 
 ---
 

@@ -17,13 +17,13 @@
 - `docs/research-a-thon/presentation.pdf` *(contributed)* — Provided content for the Demo slide (Chat Tab walkthrough, Monitor Tab feature list, live app URL), Key Results slide (metric descriptions and result interpretation), and Conclusion slide (future directions). Verified result figures match evaluation outputs from `scripts/evaluate.py` and `scripts/evaluate_adaptation.py`.
 
 ### Video
-- `docs/research-a-thon/video.mov` *(contributed)* — Reviewed the demo walkthrough section of the video for accuracy against the live application behavior, including the Pipeline Trace display, Monitor Tab metrics, and demo mode fallback. Confirmed the example query and response narrative matches real system output.
+- `https://vimeo.com/1180190697` *(contributed)* — Reviewed the demo walkthrough section of the video for accuracy against the live application behavior, including the Pipeline Trace display, Monitor Tab metrics, and demo mode fallback. Confirmed the example query and response narrative matches real system output.
 
 ---
 
 ## Percentage Contribution
 
-**50%** — Content review, data validation, and application section authorship across all three Project 3 deliverables.
+**50%** — Content review, data validation, and application section authorship across all three Project 4 deliverables.
 
 ---
 
